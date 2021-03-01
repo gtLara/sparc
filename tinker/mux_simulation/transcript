@@ -1,0 +1,44 @@
+# vsim work.mux 
+# Start time: 13:20:04 on Mar 01,2021
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.mux(mux_arc)
+view wave
+# .main_pane.wave.interior.cs.body.pw.wf
+view source
+# .main_pane.source.interior.cs.body.srcobj
+add wave *
+force a 0
+# Value length (1) does not equal array index length (32).
+# ** UI-Msg: (vsim-4011) Invalid force value: 0.
+# 
+force a x0000
+# Value length (5) does not equal array index length (32).
+# ** UI-Msg: (vsim-4011) Invalid force value: x0000.
+# 
+force a 1111111110000000000000000000000
+# Value length (31) does not equal array index length (32).
+# ** UI-Msg: (vsim-4011) Invalid force value: 1111111110000000000000000000000.
+# 
+force a 11111111100000000000000000000000
+force b 00000000011111111100000000000000
+force c 00000000000000000011111111100000
+force d 00000000000000000000000000011111
+force sel 00
+run
+force sel 01
+run
+force sel 10
+run
+force sel 11
+run
+help(force)
+# invalid command name "help(force)"
+help force
+# The force command allows you to apply stimulus interactively to VHDL signals and Verilog nets.
+# Usage: force <object_name> {<value> [[@]<time_info>][, <value> [[@]<time_info>]...} [-freeze | -drive | -deposit] [-cancel [@]<time_info>] [-repeat [@]<time_info>]
+help force -deposit
+# No help for force -deposit available.
+# End time: 13:33:29 on Mar 01,2021, Elapsed time: 0:13:25
+# Errors: 0, Warnings: 0
