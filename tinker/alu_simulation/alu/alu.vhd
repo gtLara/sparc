@@ -1,0 +1,49 @@
+library IEEE;
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use ieee.NUMERIC_STD.all;
+
+entity alu is
+    port(
+        src_a : in std_logic_vector(3 downto 0);
+        src_b: in std_logic_vector(3 downto 0);
+        alu_control : in std_logic_vector(1 downto 0);
+        alu_result : out std_logic_vector(3 downto 0);
+        zero : out std_logic);
+
+end alu;
+
+architecture alu_arc of alu is
+
+signal result : std_logic_vector(3 downto 0);
+
+begin
+    alu_process: process(alu_control, src_a, src_b)
+        begin
+            case (alu_control) is
+
+                when "00" => result <= src_a + src_b;
+                when "01" => result <= src_a - src_b;
+                when "10" => result <= src_a OR src_b;
+                when "11" => result <= src_a XOR src_b;
+                -- preencher outras operacoes de acordo com necessidade
+                when others => result <= "----";
+
+            end case;
+
+            -- saida zero se o resultado for zero
+
+            if(result = "0000") then
+                zero <= '1';
+            else
+                zero <= '0';
+            end if;
+
+            alu_result <= result;
+
+        end process;
+
+end alu_arc;
+
+-- TODO: testbench
