@@ -1,0 +1,27 @@
+# vsim work.signex 
+# Start time: 10:12:31 on Mar 03,2021
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.numeric_std(body)
+# Loading work.signex(signex_arc)
+force a 0000000000000000
+view wave
+# .main_pane.wave.interior.cs.body.pw.wf
+add wave a
+add wave b
+run
+run
+force a 1000000000000000
+run
+run
+force a 1010100011011110
+run
+run
+force a 0010100011011110
+run
+run
+# End time: 10:14:54 on Mar 03,2021, Elapsed time: 0:02:23
+# Errors: 0, Warnings: 0
