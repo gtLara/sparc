@@ -14,8 +14,9 @@ boolean crc(){
      * dados >> 2 = 0x3e;
      * ( (dados >> 2) & 0x1 ) = 0;
      *
-     */    
-    crc ^= ((dados >> i) & 0x01);
+     */
+    crc ^= (dados & 0x1);
+    dados = dados>>1;
   }
   return crc;
 }
