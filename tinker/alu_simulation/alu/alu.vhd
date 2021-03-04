@@ -6,22 +6,27 @@ use ieee.NUMERIC_STD.all;
 
 entity alu is
     port(
-        src_a : in std_logic_vector(31 downto 0);
-        src_b: in std_logic_vector(31 downto 0);
-        alu_control : in std_logic_vector(3 downto 0);
-        alu_result : out std_logic_vector(31 downto 0);
-        zero : out std_logic);
+        src_a : in std_logic_vector(31 downto 0); -- entrada a
+        src_b: in std_logic_vector(31 downto 0); -- entraba b
+        shift_amount: in std_logic_vector(5 downto 0); -- quantidade de deslocamento: pode deslocar 32 bits
+        alu_control : in std_logic_vector(3 downto 0); -- controle de operação
+        alu_result : out std_logic_vector(31 downto 0); -- resultado de operação
+        zero : out std_logic); -- bandeira que indica se resultado foi zero
 
 end alu;
 
 architecture alu_arc of alu is
 
-signal result : std_logic_vector(31 downto 0);
-constant all_zeros : std_logic_vector(31 downto 0) := (others => '0');
+signal result : std_logic_vector(31 downto 0); -- sinal auxiliar intermediario
+constant all_zeros : std_logic_vector(31 downto 0) := (others => '0'); 
 
 begin
-    alu_process: process(alu_control, src_a, src_b)
+
+    alu_process: process(alu_control, src_a, src_b, shift_amount)
         begin
+            -- TODO: testbench shift; get shamt right, see if the value updates or is defined
+            -- just by initial value. i think its better to just throw the convertion into the
+            -- shift expression.
             case (alu_control) is
 
                 when "0000" => result <= src_a + src_b; -- soma
@@ -38,7 +43,13 @@ begin
 
                 -- tratar mais casos se necessario
 
-                when others => null; -- no op 
+                when "0101" =>                          -- shift right logical; descloca bits recebidos em src_a
+                    result <= std_logic_vector(unsigned(src_a) srl to_integer(unsigned(shift_amount)));
+
+                when "0110" =>                          -- shift left logical; descloca bits recebidos em src_a
+                    result <= std_logic_vector(unsigned(src_a) sll to_integer(unsigned(shift_amount)));
+
+                when others => null; -- no op
                     result <= "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU";
 
             end case;
