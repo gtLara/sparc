@@ -2,7 +2,7 @@
 ! ld - pra iniciar variáveis
 ! jmpl, com reg destino %g0 - pro for (salto incondicional)
 ! add - pro for
-! bge - "Branch on Greater or Equal" pro for
+! bge,a - "Branch on Greater or Equal" com annul ",a" pro for
 ! srl
 ! xor
 ! and
