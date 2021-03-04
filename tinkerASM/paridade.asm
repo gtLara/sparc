@@ -2,6 +2,7 @@
 ! ld - pra iniciar variáveis
 ! jmpl, com reg destino %g0 - pro for (salto incondicional)
 ! add - pro for
+! cmp a,b = subcc a, b, %g0 - para mudar o icc e usar o bge
 ! bge,a - "Branch on Greater or Equal" com annul ",a" pro for
 ! srl
 ! xor
