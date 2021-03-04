@@ -19,7 +19,7 @@
 
 !seções devem ser iniciadas assim:
 .section ".data"
-    dados:  .word 4    !pode ser qualquer coisa
+    dados:  .word 0x04    !dado de 8bits a ser analisado 
     crc:    .word 1    !se dados = 0, crc = 1 e paridade par
     
 .section ".text"
