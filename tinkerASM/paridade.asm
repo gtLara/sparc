@@ -1,7 +1,6 @@
 ! Instruções a serem usadas:
-! <nome> significa que não foi selecionada a instrução SPARC
 ! ld - pra iniciar variáveis
-! JMPL, com reg destino %g0 - pro for (salto incondicional)
+! jmpl, com reg destino %g0 - pro for (salto incondicional)
 ! add - pro for
 ! BGE - "Branch on Greater or Equal" pro for
 ! srl
