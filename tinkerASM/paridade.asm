@@ -29,7 +29,7 @@ main:   ld crc , %l0        ! traz os dados da memória de dados
         
         add %g0, %g0, %l7   ! inicia %l7 = i = 0        
 
-for:    and %l1, 1, %l2     ! pega o LSB do dados atual e poe em %l2
+for:    and %l1, 0x001, %l2     ! pega o LSB do dados atual e poe em %l2
         xor %l0, %l2, %l0   ! atualiza o crc com o bit de dados
         srl %l1, 1, %l1     ! dados >>= 1 
 
