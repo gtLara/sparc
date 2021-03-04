@@ -15,3 +15,7 @@
 ! %g0 = %r0 = constante 0
 ! tem o PC tbm, mas ele sempre existe
 
+!seções devem ser iniciadas assim:
+.section ".data"
+
+.section ".text"
