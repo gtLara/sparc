@@ -1,37 +1,38 @@
 m255
 K4
 z2
-!s11e MIXED_VERSIONS
+!s11e vcom 2020.3 2020.07, Jul 22 2020
 13
 !s112 1.1
 !i10d 8192
 !i10e 25
 !i10f 100
 cModel Technology
-Z0 d/home/gabriel/2020-2/aoc/code/tp_2/tinker/alu_simulation
+Z0 d/home/gabriel/2020-2/aoc/code/tp_2/tinker/alu_simulation/alu
 Ealu
-Z1 w1614869727
+Z1 w1614869269
 Z2 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
 Z3 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
 Z4 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
 Z5 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
 Z6 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
-!i122 38
+!i122 0
 R0
-Z7 8alu/alu.vhd
-Z8 Falu/alu.vhd
+Z7 8alu.vhd
+Z8 Falu.vhd
 l0
 L7 1
-V9;?UOFPJaWk9Mf9ZnX5272
+VEL4oPbR^VT9NEkCzjilYo1
 !s100 Uh9Pcie^;=EB=FP[E70h[3
 Z9 OV;C;2020.3;71
 32
-Z10 !s110 1614869738
+Z10 !s110 1614869336
 !i10b 1
-Z11 !s108 1614869738.000000
-Z12 !s90 alu/alu.vhd|alu/tb_alu.vhd|
-Z13 !s107 alu/tb_alu.vhd|alu/alu.vhd|
+Z11 !s108 1614869336.000000
+Z12 !s90 -check_synthesis|tb_alu.vhd|alu.vhd|
+!s107 alu.vhd|tb_alu.vhd|
 !i113 1
+Z13 o-check_synthesis
 Z14 tExplicit 1 CvgOpt 0
 Aalu_arc
 R2
@@ -39,35 +40,36 @@ R3
 R4
 R5
 R6
-Z15 DEx4 work 3 alu 0 22 9;?UOFPJaWk9Mf9ZnX5272
-!i122 38
+DEx4 work 3 alu 0 22 EL4oPbR^VT9NEkCzjilYo1
+!i122 0
 l22
-Z16 L17 39
-Z17 V9kCd?<gkdSQV2Om>O6K<L3
-Z18 !s100 6PA8Gf?>:AV08on=Ch00d3
+L17 39
+VN`CGl3@AJE1GBB=lm=NJ:0
+!s100 JSWmkQN4Ff:FZeb=X6;8@1
 R9
 32
 R10
 !i10b 1
 R11
 R12
-R13
+Z15 !s107 alu.vhd|tb_alu.vhd|
 !i113 1
+R13
 R14
 Etb_alu
-Z19 w1614869730
+Z16 w1614868820
 R2
 R3
 R4
 R5
 R6
-!i122 38
+!i122 0
 R0
-Z20 8alu/tb_alu.vhd
-Z21 Falu/tb_alu.vhd
+Z17 8tb_alu.vhd
+Z18 Ftb_alu.vhd
 l0
 L7 1
-VZhObP<J[NM=nk<HGel_L61
+Vm_mn7]Me[SNG11A<LYHLR1
 !s100 HBfHe:kbV:@m0X3GdK>C:0
 R9
 32
@@ -75,8 +77,9 @@ R10
 !i10b 1
 R11
 R12
-R13
+R15
 !i113 1
+R13
 R14
 Atb
 R2
@@ -84,18 +87,19 @@ R3
 R4
 R5
 R6
-Z22 DEx4 work 6 tb_alu 0 22 ZhObP<J[NM=nk<HGel_L61
-!i122 38
+DEx4 work 6 tb_alu 0 22 m_mn7]Me[SNG11A<LYHLR1
+!i122 0
 l34
-L10 83
-V>4KKVE]RRaa<XZY3TgQD51
-!s100 TmmTW^h_BGNQ46LDkNNYU1
+L10 69
+VP4AQ:4EimoBnjDP0]9>`o1
+!s100 @4WT]eVQXR0GoaKbdD=MF2
 R9
 32
 R10
 !i10b 1
 R11
 R12
-R13
+R15
 !i113 1
+R13
 R14
