@@ -1,4 +1,4 @@
-! Instruções a serem usadas:
+# Instruções a serem usadas:
 ! <nome> significa que não foi selecionada a instrução SPARC
 
 ! <soma imediato> ou <carrega memória> - pra iniciar variáveis
