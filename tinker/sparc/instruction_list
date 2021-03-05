@@ -1,0 +1,9 @@
+(usando mnemonicos MIPS)
+
+- beq
+- slt
+- add
+- lw / addi
+- slr
+- xor
+- and
