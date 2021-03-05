@@ -28,8 +28,8 @@ architecture tb of tb_data_memory is
 
     -- inputs
 
-    signal we : std_logic := '1';
-    signal clk : std_logic := '1';
+    signal we : std_logic := '0';
+    signal clk : std_logic := '0';
     signal data_address : std_logic_vector(4 downto 0) := (others => '0');
     signal write_data : std_logic_vector(31 downto 0) := (others => '0');
 
@@ -60,8 +60,6 @@ architecture tb of tb_data_memory is
         constant period: time := 200 ns;
 
             begin
-
-                data <= "00000000000000000000000000000000";
 
                 wait for period;
 

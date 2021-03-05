@@ -22,7 +22,7 @@ architecture data_arc of data_memory is
 
     type ram_32x32 is array (31 downto 0) of std_logic_vector(31 downto 0);
 
-    signal mem: ram_32x32;
+    signal mem: ram_32x32 := (others => (others => '0')); -- preenche a memoria com zeros
 
     begin
 
@@ -41,7 +41,7 @@ architecture data_arc of data_memory is
 
         -- processo de leitura
 
-        read: process(data_address, clk, we, write_data)      -- sensivel a todos os sinais
+        read: process(data_address)   -- sensivel a todos os sinais
 
         begin
 
