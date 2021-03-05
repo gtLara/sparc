@@ -34,7 +34,8 @@ for:    and %l1, 1, %l2     ! pega o LSB do dados atual e poe em %l2
 
         add %l7, 1, %l7     ! incrementa i
         cmp %l7 , 8         ! compara i com 8 e modifica o icc
-        bl,a for            ! se i < 8 volta pro for, sem a instrução de delay
+        bl for; nop         ! se i < 8 volta pro for, a instrução de delay tem que existir de qualquer jeito,
+                            ! mas a gente vai ignorar isso no caminho de dados 
 !FIM, o resultado com crc fica em %l0
         
         printf("%d",crc);
