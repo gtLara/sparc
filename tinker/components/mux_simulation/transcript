@@ -1,0 +1,22 @@
+# vsim work.mux 
+# Start time: 09:47:12 on Mar 03,2021
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.mux(mux_arc)
+force a 000000000000000000000000000000
+# Value length (30) does not equal array index length (32).
+# ** UI-Msg: (vsim-4011) Invalid force value: 000000000000000000000000000000.
+# 
+force a 00000000000000000000000000000000
+force b 00000000000011111110000000000000
+force sel 0
+run
+add wave *
+run
+
+run
+force sel 1
+run
+# End time: 09:48:29 on Mar 03,2021, Elapsed time: 0:01:17
+# Errors: 0, Warnings: 0

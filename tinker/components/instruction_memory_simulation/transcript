@@ -1,0 +1,26 @@
+# vsim work.tb_instruction_memory 
+# Start time: 23:54:57 on Mar 04,2021
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_textio(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_instruction_memory(tb)
+# Loading work.instruction_memory(instruction_memory_arc)
+view wave
+# .main_pane.wave.interior.cs.body.pw.wf
+add wave *
+run 1us
+# 11111111100000000000000000000000
+# 00000000011111111100000000000000
+# 00000000000000000011111111100000
+# 00000000000000000000000000011111
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /tb_instruction_memory/uut
+run
+run
+run
+# End time: 23:56:43 on Mar 04,2021, Elapsed time: 0:01:46
+# Errors: 0, Warnings: 1

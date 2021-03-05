@@ -46,7 +46,7 @@ architecture register_arc of register_file is
 
         read: process(ra_1, ra_2, wa_3, clk,                -- sensivel a todos os sinais
                       we, wa_3_data)
-        begin 
+        begin
             if( to_integer(ra_1) = 0 ) then
                 ra_1_data <= zeros;
 

@@ -1,0 +1,19 @@
+vsim work.tb_alu
+# vsim work.tb_alu 
+# Start time: 13:22:37 on Mar 04,2021
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_alu(tb)
+# Loading work.alu(alu_arc)
+view wave *
+# .main_pane.wave.interior.cs.body.pw.wf
+add wave *
+run 1us
+# ** Warning: There is an 'U'|'X'|'W'|'Z'|'-' in an arithmetic operand, the result will be 'X'(es).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_alu/uut
+# End time: 13:23:42 on Mar 04,2021, Elapsed time: 0:01:05
+# Errors: 0, Warnings: 1

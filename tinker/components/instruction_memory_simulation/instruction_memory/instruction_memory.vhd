@@ -29,7 +29,7 @@ architecture instruction_memory_arc of instruction_memory is
 
     load: process(set)
 
-        variable counter : integer := 0; 
+        variable counter : integer := 0;
         variable current_read_line : line;
         variable current_read_instruction : std_logic_vector(31 downto 0);
 

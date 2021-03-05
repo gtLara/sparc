@@ -1,0 +1,19 @@
+# vsim work.tb_register_file 
+# Start time: 21:30:05 on Mar 04,2021
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_register_file(tb)
+# Loading ieee.numeric_std_unsigned(body)
+# Loading work.register_file(register_arc)
+view wacve
+# Invalid window pattern: wacve
+view wave
+# .main_pane.wave.interior.cs.body.pw.wf
+add wave *
+run 1 us
+# End time: 21:32:06 on Mar 04,2021, Elapsed time: 0:02:01
+# Errors: 0, Warnings: 0

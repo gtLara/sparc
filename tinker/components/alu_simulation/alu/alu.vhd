@@ -18,7 +18,7 @@ end alu;
 architecture alu_arc of alu is
 
 signal result : std_logic_vector(31 downto 0); -- sinal auxiliar intermediario
-constant all_zeros : std_logic_vector(31 downto 0) := (others => '0'); 
+constant all_zeros : std_logic_vector(31 downto 0) := (others => '0');
 
 begin
 

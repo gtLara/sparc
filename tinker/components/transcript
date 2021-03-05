@@ -1,0 +1,17 @@
+# vsim work.tb_instruction_memory 
+# Start time: 22:16:14 on Mar 04,2021
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_instruction_memory(tb)
+# Loading work.instruction_memory(instruction_memory_arc)
+# ** Error: (vsim-3732) No default binding for component instance 'uut'.
+#    The following component port is not on the entity:
+#           instruction
+#    Time: 0 ps  Iteration: 0  Instance: /tb_instruction_memory/uut File: instruction_memory_simulation/tb_instruction_memory.vhd Line: 34
+# Error loading design
+# End time: 22:16:14 on Mar 04,2021, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0

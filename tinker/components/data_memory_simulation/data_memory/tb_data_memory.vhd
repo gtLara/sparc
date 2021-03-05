@@ -60,7 +60,7 @@ architecture tb of tb_data_memory is
         constant period: time := 200 ns;
 
             begin
-                
+
                 data <= "00000000000000000000000000000000";
 
                 wait for period;

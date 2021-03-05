@@ -9,7 +9,6 @@ end tb_register_file;
 
 architecture tb of tb_register_file is
 
-
     -- declaracao de registrador
 
     component register_file is -- registrador de 32 palavras
@@ -31,9 +30,9 @@ architecture tb of tb_register_file is
 
     signal we : std_logic := '1';
     signal clk : std_logic := '1';
-    signal ra_1, ra_2, wa_3 : std_logic_vector(4 downto 0) := (others => '0'); 
-    signal wa_3_data : std_logic_vector(31 downto 0) := (others => '0'); 
-        
+    signal ra_1, ra_2, wa_3 : std_logic_vector(4 downto 0) := (others => '0');
+    signal wa_3_data : std_logic_vector(31 downto 0) := (others => '0');
+
     -- outputs
 
     signal ra_1_data, ra_2_data : std_logic_vector(31 downto 0);
@@ -71,7 +70,7 @@ architecture tb of tb_register_file is
                 wa_3 <= "00001";
 
                 wait for period;
-                
+
                 wa_3_data <= "00000000000000000000000000011111";
                 wa_3 <= "00010";
 
@@ -95,7 +94,7 @@ architecture tb of tb_register_file is
 
                 ra_1 <= "00000";
 
-                wait for period;        
+                wait for period;
 
         end process test_bench;
 end tb;
