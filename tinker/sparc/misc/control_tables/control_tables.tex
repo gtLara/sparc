@@ -1,0 +1,23 @@
+\documentclass{article}
+
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+
+\begin{document}
+
+\begin{table}[H]
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+\textbf{Mnemônico} & \textbf{OpCode} & \textbf{Format} & \textbf{data\_we} & \textbf{register\_we} & \textbf{alu\_control} \\ \hline
+ld                 & 00000           & 11              & 0                 & 1                     & 0000                  \\ \hline
+add                & 00000           & 10              & 0                 & 1                     & 0000                  \\ \hline
+and                & 010001          & 10              & 0                 & 1                     & 0010                  \\ \hline
+xor                & 000111          & 10              & 0                 & 1                     & 0100                  \\ \hline
+srl                & 100110          & 10              & 0                 & 1                     & 0111                  \\ \hline
+\end{tabular}
+\end{table}
+
+\end{document}
