@@ -18,10 +18,10 @@ entity sparc is
         clk : in std_logic;
         reset : in std_logic;
         set : in std_logic;
+        -- control
         data_we : in std_logic;
         register_we : in std_logic;
         alu_control : in std_logic_vector(3 downto 0) --control signal
-        -- alu_mux_sel : in std_logic; -- control signal ; vem direto da instrucao
         );
 end sparc;
 
