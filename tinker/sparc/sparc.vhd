@@ -17,6 +17,7 @@ entity sparc is
     port(
         clk : in std_logic;
         reset : in std_logic;
+        set : in std_logic;
         data_we : in std_logic;
         register_we : in std_logic;
         alu_control : in std_logic_vector(3 downto 0) --control signal
@@ -29,6 +30,14 @@ architecture sparc_arc of sparc is
     --------------------------------------------------------------------------
     -- Declaracao de componentes ---------------------------------------------
     --------------------------------------------------------------------------
+    
+    component program_counter is
+        port(
+             next_instruction_address : in std_logic_vector(4 downto 0);
+             clk : in std_logic;
+             current_instruction_address : out std_logic_vector(4 downto 0)
+            );
+    end component;
 
     component signex is
         port(
@@ -78,6 +87,22 @@ architecture sparc_arc of sparc is
 
     end component;
 
+    component adder is
+        port(
+             src_a : in std_logic_vector(4 downto 0);
+             src_b : in std_logic_vector(4 downto 0);
+             sum : out std_logic_vector(4 downto 0));
+    end component;
+
+    component instruction_memory is
+
+        port(
+                set : in std_logic;
+                address : in std_logic_vector(4 downto 0);
+                instruction : out std_logic_vector(31 downto 0));
+
+    end component;
+
     --------------------------------------------------------------------------
     -- Declaracao de sinais --------------------------------------------------
     --------------------------------------------------------------------------
@@ -115,12 +140,10 @@ architecture sparc_arc of sparc is
     -- sinais de banco de registradores
 
     signal ra_1_data, ra_2_data, wa_3_data : std_logic_vector(31 downto 0) := (others => '0');
-    -- signal register_we : std_logic := '1'; -- essa informacao deve ser preenchida por controle
 
     -- sinais de alu
 
     signal shift_amount: std_logic_vector(5 downto 0) := (others => '0');
-    -- signal alu_control : std_logic_vector(3 downto 0) := "0101"; -- CONTROL (and)
     signal zero : std_logic;
 
     -- sinais de mux
@@ -130,8 +153,13 @@ architecture sparc_arc of sparc is
 
     -- sinais de memoria de dados
 
-    -- signal data_we : std_logic := '1'; -- essa informacao deve ser preenchida por controle
     signal data: std_logic_vector(31 downto 0);
+
+    -- sinais de contador de programa e seu somador
+
+    signal increment_of_one : std_logic_vector(4 downto 0) := "00001";
+    signal current_instruction_address : std_logic_vector(4 downto 0) := "00000";
+    signal pc_adder_out : std_logic_vector(4 downto 0); 
 
     --------------------------------------------------------------------------
     -- Definicao de datapath -------------------------------------------------
@@ -145,6 +173,30 @@ architecture sparc_arc of sparc is
     --------------------------------------------------------------------------
     -- Instanciacao de componentes -------------------------------------------
     --------------------------------------------------------------------------
+
+    -- instancio do somador de contador de programa
+
+    u_pc_adder: adder port map(
+                                src_a => current_instruction_address, -- o bootstrap do processador é feito aqui: faz-se o drive da primeira instrução e ele se desenrola a partir disso
+                                src_b => increment_of_one, 
+                                sum  => pc_adder_out -- essa saida deve ir ao mux para beq
+                               );
+
+    -- instancia contador de programa
+
+    u_program_counter: program_counter port map(
+                                                clk => clk,
+                                                next_instruction_address => pc_adder_out,
+                                                current_instruction_address => current_instruction_address
+                                                );
+    
+    -- instancia de memoria de instrucoes
+
+    u_instruction_memory: instruction_memory port map(
+                                                      set  => set,
+                                                      address => current_instruction_address,
+                                                      instruction => instruction
+                                                     );
 
     -- instancia de banco de registradores
 

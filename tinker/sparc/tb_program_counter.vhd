@@ -10,7 +10,7 @@ end tb_program_counter;
 architecture tb of tb_program_counter is
 
     -- declaracao de pc
-    
+
     component program_counter is
         port(
              next_instruction_address : in std_logic_vector(4 downto 0);

@@ -12,6 +12,7 @@ architecture tb of tb_sparc is
         port(
             clk : in std_logic;
             reset : in std_logic;
+            set : in std_logic;
             -- sinais de controle
             data_we : in std_logic;
             register_we : in std_logic;
@@ -27,6 +28,7 @@ architecture tb of tb_sparc is
     signal data_we : std_logic := '0';
     signal register_we : std_logic := '0';
     signal reset : std_logic := '0';
+    signal set : std_logic := '0';
     signal alu_control : std_logic_vector(3 downto 0) := "0101";
     constant period: time := 200 ns;
 
@@ -35,6 +37,7 @@ architecture tb of tb_sparc is
     uut: sparc port map(
                         clk  => clk ,
                         reset => reset,
+                        set => set,
                         alu_control => alu_control,
                         data_we => data_we,
                         register_we => register_we
@@ -44,6 +47,14 @@ architecture tb of tb_sparc is
 
     testbench: process
         begin
+        
+        set <= '1'; -- carrega instrucoes de programa
+
+        wait for period;
+
+        wait for period;
+
+        wait for period;
 
         wait for period;
 
