@@ -1,3 +1,13 @@
+-- TODO: implementar datapath expandido, program counter, carregar
+-- programa, pensar sobre enderecamento 
+--
+--
+--
+--
+--
+--
+--
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
@@ -6,10 +16,13 @@ use ieee.NUMERIC_STD.all;
 entity sparc is
     port(
         clk : in std_logic;
-        reset : in std_logic
+        reset : in std_logic;
+        data_we : in std_logic;
+        register_we : in std_logic;
+        alu_control : in std_logic_vector(3 downto 0) --control signal
+        -- alu_mux_sel : in std_logic; -- control signal ; vem direto da instrucao
         );
 end sparc;
-
 
 architecture sparc_arc of sparc is
 
@@ -53,6 +66,18 @@ architecture sparc_arc of sparc is
 
     end component;
 
+    component data_memory is -- memoria de dados de 32 palavras
+
+        port(
+             data_address: in std_logic_vector(4 downto 0);
+             clk : in std_logic;
+             we : in std_logic;
+             write_data : in std_logic_vector(31 downto 0);
+             data : out std_logic_vector(31 downto 0)
+            );
+
+    end component;
+
     --------------------------------------------------------------------------
     -- Declaracao de sinais --------------------------------------------------
     --------------------------------------------------------------------------
@@ -90,18 +115,23 @@ architecture sparc_arc of sparc is
     -- sinais de banco de registradores
 
     signal ra_1_data, ra_2_data, wa_3_data : std_logic_vector(31 downto 0) := (others => '0');
-    signal we : std_logic := '1'; -- essa informacao deve ser preenchida por controle
+    -- signal register_we : std_logic := '1'; -- essa informacao deve ser preenchida por controle
 
     -- sinais de alu
 
     signal shift_amount: std_logic_vector(5 downto 0) := (others => '0');
-    signal alu_control : std_logic_vector(3 downto 0) := "0101"; -- CONTROL (and)
+    -- signal alu_control : std_logic_vector(3 downto 0) := "0101"; -- CONTROL (and)
     signal zero : std_logic;
 
     -- sinais de mux
 
     signal alu_mux_out: std_logic_vector(31 downto 0);
     signal alu_mux_sel: std_logic;
+
+    -- sinais de memoria de dados
+
+    -- signal data_we : std_logic := '1'; -- essa informacao deve ser preenchida por controle
+    signal data: std_logic_vector(31 downto 0);
 
     --------------------------------------------------------------------------
     -- Definicao de datapath -------------------------------------------------
@@ -123,7 +153,7 @@ architecture sparc_arc of sparc is
                                              ra_2 => rs_2,
                                              wa_3 => rd,
                                              clk => clk,
-                                             we => we,
+                                             we => register_we,
                                              wa_3_data => wa_3_data,
                                              ra_1_data => ra_1_data,
                                              ra_2_data => ra_2_data);
@@ -149,8 +179,18 @@ architecture sparc_arc of sparc is
                         src_b => alu_mux_out,
                         shift_amount => shift_amount,
                         alu_control => alu_control,
-                        alu_result => wa_3_data,
+                        alu_result => wa_3_data, -- saida de alu é mapeada para endereço de escrita de registrador ou dados. ver como generalizar nome desse sinal
                         zero => zero
                      );
+
+    -- instancia de memoria de dados
+
+    u_data_mem: data_memory port map(
+                                     data_address => wa_3_data(4 downto 0), -- saida de alu; enderacamento eh feito em 5 bits
+                                     clk => clk,
+                                     we => data_we,
+                                     write_data => ra_1_data,
+                                     data => data
+                                    );
 
 end sparc_arc;

@@ -31,9 +31,10 @@ begin
 
                 when "0000" => result <= src_a + src_b; -- soma
                 when "0001" => result <= src_a - src_b; -- subtracao
-                when "0010" => result <= src_a OR src_b; -- or
-                when "0011" => result <= src_a XOR src_b; -- xor
-                when "0100" =>                            -- set less than
+                when "0010" => result <= src_a AND src_b; -- and
+                when "0011" => result <= src_a OR src_b; -- or
+                when "0100" => result <= src_a XOR src_b; -- xor
+                when "0101" =>                            -- set less than
                     if (src_a < src_b) then
                         result <= all_zeros;
                         result(0) <= '1';
@@ -43,10 +44,10 @@ begin
 
                 -- tratar mais casos se necessario
 
-                when "0101" =>                          -- shift right logical; descloca bits recebidos em src_a
+                when "0111" =>                          -- shift right logical; descloca bits recebidos em src_a
                     result <= std_logic_vector(unsigned(src_a) srl to_integer(unsigned(shift_amount)));
 
-                when "0110" =>                          -- shift left logical; descloca bits recebidos em src_a
+                when "1000" =>                          -- shift left logical; descloca bits recebidos em src_a
                     result <= std_logic_vector(unsigned(src_a) sll to_integer(unsigned(shift_amount)));
 
                 when others => null; -- no op
