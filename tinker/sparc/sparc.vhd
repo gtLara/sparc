@@ -6,11 +6,7 @@ use ieee.NUMERIC_STD.all;
 entity sparc is
     port(
         clk : in std_logic;
-        reset : in std_logic;
-        rd_1 : in std_logic_vector(31 downto 0);
-        rd_2 : in std_logic_vector(31 downto 0)
-        ra_1 : in std_logic_vector(4 downto 0);
-        ra_2 : in std_logic_vector(4 downto 0)
+        reset : in std_logic
         );
 end sparc;
 
@@ -81,11 +77,15 @@ architecture sparc_arc of sparc is
 
     signal rs_2 : std_logic_vector(4 downto 0) := instruction(4 downto 0);
 
-    -- i: 1 para instrucao imediata e 0 caso contrario
+    -- i: 1 para instrucao imediata e 0 caso contrario CONTROLE
     
     signal i: std_logic := instruction(13);
 
     -- o restante da instrucao vai para controle
+
+    -- sinais de extensor de sinais
+
+    signal signex_out : std_logic_vector(31 downto 0);
 
     -- sinais de banco de registradores
 
@@ -95,7 +95,7 @@ architecture sparc_arc of sparc is
     -- sinais de alu
 
     signal shift_amount: std_logic_vector(5 downto 0) := (others => '0');
-    signal alu_control : std_logic_vector(3 downto 0) := "0011"; -- CONTROL
+    signal alu_control : std_logic_vector(3 downto 0) := "0101"; -- CONTROL (and)
     signal zero : std_logic;
 
     -- sinais de mux
