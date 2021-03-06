@@ -1,7 +1,7 @@
 m255
 K4
 z2
-!s11e vcom 2020.3 2020.07, Jul 22 2020
+!s11e MIXED_VERSIONS
 13
 !s112 1.1
 !i10d 8192
@@ -9,43 +9,42 @@ z2
 !i10f 100
 cModel Technology
 Z0 d/home/gabriel/2020-2/aoc/code/tp_2/tinker/sparc
-Esparc
-Z1 w1614918124
+Ealu
+Z1 w1614916512
 Z2 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
 Z3 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
 Z4 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
 Z5 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
 Z6 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
-!i122 7
+!i122 11
 R0
-Z7 8sparc.vhd
-Z8 Fsparc.vhd
+Z7 8alu.vhd
+Z8 Falu.vhd
 l0
-L6 1
-V]d6I2fI3YeH00o<Y;`=Tc2
-!s100 lE=3T[^;fT0dMAzg3S[U]3
+L7 1
+VLlJ]Q4kLfhnBU^c97[5DS0
+!s100 jOcAHn;o:ZbV0WS>f[eK<0
 Z9 OV;C;2020.3;71
 32
-Z10 !s110 1614918128
+Z10 !s110 1615000040
 !i10b 1
-Z11 !s108 1614918128.000000
-Z12 !s90 -check_synthesis|sparc.vhd|
-Z13 !s107 sparc.vhd|
+Z11 !s108 1615000039.000000
+Z12 !s90 register_file.vhd|alu.vhd|mux.vhd|signex.vhd|
+Z13 !s107 signex.vhd|mux.vhd|alu.vhd|register_file.vhd|
 !i113 1
-Z14 o-check_synthesis
-Z15 tExplicit 1 CvgOpt 0
-Asparc_arc
+Z14 tExplicit 1 CvgOpt 0
+Aalu_arc
 R2
 R3
 R4
 R5
 R6
-Z16 DEx4 work 5 sparc 0 22 ]d6I2fI3YeH00o<Y;`=Tc2
-!i122 7
-l60
-L14 63
-V2937;N^mJoUIK4J82zB@<3
-!s100 4CFYVVBd]9PZ<WejcdJm@2
+Z15 DEx4 work 3 alu 0 22 LlJ]Q4kLfhnBU^c97[5DS0
+!i122 11
+l23
+Z16 L18 49
+Z17 V`c@N:Nh[BIV<S?<>i<kZT0
+Z18 !s100 BcAlSE<UbagH6aZCT;=1o2
 R9
 32
 R10
@@ -55,4 +54,158 @@ R12
 R13
 !i113 1
 R14
-R15
+Emux
+Z19 w1614915991
+R5
+R6
+!i122 11
+R0
+Z20 8mux.vhd
+Z21 Fmux.vhd
+l0
+L4 1
+V=c:RaXD><c`R5Pg?A4kE:1
+!s100 0?`6X:UeDj7D5Uc8;o1Bh2
+R9
+32
+R10
+!i10b 1
+R11
+R12
+R13
+!i113 1
+R14
+Amux_arc
+R5
+R6
+Z22 DEx4 work 3 mux 0 22 =c:RaXD><c`R5Pg?A4kE:1
+!i122 11
+l13
+Z23 L11 8
+Z24 VkAD?^1hfM`BZ?7XTe0eKc1
+Z25 !s100 A4aoEe6E^<^ARgLzW97Gi3
+R9
+32
+R10
+!i10b 1
+R11
+R12
+R13
+!i113 1
+R14
+Eregister_file
+Z26 w1615000036
+Z27 DPx4 ieee 20 numeric_std_unsigned 0 22 L9z`>=>LNY9h8oAIomUKm3
+R2
+R3
+R4
+R5
+R6
+!i122 11
+R0
+Z28 8register_file.vhd
+Z29 Fregister_file.vhd
+l0
+L7 1
+Vo3[e>E[@9@b?A=NJ6l6X:3
+!s100 1=A1C42>jEcRfbY;PMM1e2
+R9
+32
+R10
+!i10b 1
+R11
+R12
+R13
+!i113 1
+R14
+Aregister_arc
+R27
+R2
+R3
+R4
+R5
+R6
+Z30 DEx4 work 13 register_file 0 22 o3[e>E[@9@b?A=NJ6l6X:3
+!i122 11
+l31
+Z31 L19 48
+VO<4gzPmi5]NCi[X0cV70X1
+!s100 ljcfH>8J^c3AYW_@;0]ZG2
+R9
+32
+R10
+!i10b 1
+R11
+R12
+R13
+!i113 1
+R14
+Esignex
+Z32 w1614999440
+R2
+R3
+R4
+R5
+R6
+!i122 11
+R0
+Z33 8signex.vhd
+Z34 Fsignex.vhd
+l0
+L6 1
+VVek=_3:o=z_2e4^_fXP[F1
+!s100 X5[4=ObAflei;Jmnf8Q<K0
+R9
+32
+R10
+!i10b 1
+R11
+R12
+R13
+!i113 1
+R14
+Asignex_arc
+R2
+R3
+R4
+R5
+R6
+Z35 DEx4 work 6 signex 0 22 Vek=_3:o=z_2e4^_fXP[F1
+!i122 11
+l19
+Z36 L12 14
+Z37 V[7EjCA8mfhcIK`5c;?JDg3
+Z38 !s100 ``6YDVhj5?TLQO3iDCPE>3
+R9
+32
+R10
+!i10b 1
+R11
+R12
+R13
+!i113 1
+R14
+Esparc
+w1614999264
+R2
+R3
+R4
+R5
+R6
+!i122 5
+R0
+8sparc.vhd
+Fsparc.vhd
+l0
+L6 1
+V8FSRe2So]bVWGGLn2]gO>2
+!s100 lE=3T[^;fT0dMAzg3S[U]3
+R9
+32
+!s110 1614999317
+!i10b 1
+!s108 1614999317.000000
+!s90 register_file.vhd|alu.vhd|mux.vhd|signex.vhd|sparc.vhd|
+!s107 sparc.vhd|signex.vhd|mux.vhd|alu.vhd|register_file.vhd|
+!i113 1
+R14
