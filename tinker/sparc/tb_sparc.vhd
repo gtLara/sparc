@@ -14,6 +14,7 @@ architecture tb of tb_sparc is
             reset : in std_logic;
             set : in std_logic;
             -- sinais de controle
+            regwrite_source : in std_logic;
             data_we : in std_logic;
             register_we : in std_logic;
             alu_control : in std_logic_vector(3 downto 0)
@@ -26,10 +27,11 @@ architecture tb of tb_sparc is
 
     signal clk : std_logic := '1';
     signal data_we : std_logic := '0';
-    signal register_we : std_logic := '0';
+    signal register_we : std_logic := '1';
+    signal regwrite_source : std_logic := '0';
     signal reset : std_logic := '0';
     signal set : std_logic := '0';
-    signal alu_control : std_logic_vector(3 downto 0) := "0101";
+    signal alu_control : std_logic_vector(3 downto 0) := "0000";
     constant period: time := 200 ns;
 
     begin
@@ -38,6 +40,7 @@ architecture tb of tb_sparc is
                         clk  => clk ,
                         reset => reset,
                         set => set,
+                        regwrite_source => regwrite_source,
                         alu_control => alu_control,
                         data_we => data_we,
                         register_we => register_we
@@ -47,7 +50,7 @@ architecture tb of tb_sparc is
 
     testbench: process
         begin
-        
+
         set <= '1'; -- carrega instrucoes de programa
 
         wait for period;

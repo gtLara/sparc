@@ -1,12 +1,4 @@
--- TODO: implementar datapath expandido, program counter, carregar
--- programa, pensar sobre enderecamento 
---
---
---
---
---
---
---
+-- TODO: implementar datapath expandido, expandir controle, implementar controle
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -21,6 +13,7 @@ entity sparc is
         -- control
         data_we : in std_logic;
         register_we : in std_logic;
+        regwrite_source : in std_logic; -- if zero writes rd with data from data memory; if 1, from alu output
         alu_control : in std_logic_vector(3 downto 0) --control signal
         );
 end sparc;
@@ -30,7 +23,7 @@ architecture sparc_arc of sparc is
     --------------------------------------------------------------------------
     -- Declaracao de componentes ---------------------------------------------
     --------------------------------------------------------------------------
-    
+
     component program_counter is
         port(
              next_instruction_address : in std_logic_vector(4 downto 0);
@@ -107,9 +100,11 @@ architecture sparc_arc of sparc is
     -- Declaracao de sinais --------------------------------------------------
     --------------------------------------------------------------------------
 
-    -- DUMMIES
 
-    signal instruction : std_logic_vector(31 downto 0) := "00000010000000000011010101010101";
+    -- Parsing de instrucoes: dessa forma esta errado. é necessário fazer isso direto nas entradas dos ports
+    --------------------------------------------------------------------------
+
+    signal instruction : std_logic_vector(31 downto 0);
 
     -- imediato
 
@@ -127,9 +122,15 @@ architecture sparc_arc of sparc is
 
     signal rs_2 : std_logic_vector(4 downto 0) := instruction(4 downto 0);
 
+    -- quantidade de deslocamento
+
+    signal shift_amount : std_logic_vector(5 downto 0) := instruction(5 downto 0);
+
     -- i: 1 para instrucao imediata e 0 caso contrario CONTROLE
-    
+
     signal i: std_logic := instruction(13);
+
+    --------------------------------------------------------------------------
 
     -- o restante da instrucao vai para controle
 
@@ -143,8 +144,8 @@ architecture sparc_arc of sparc is
 
     -- sinais de alu
 
-    signal shift_amount: std_logic_vector(5 downto 0) := (others => '0');
     signal zero : std_logic;
+    signal alu_result : std_logic_vector(31 downto 0);
 
     -- sinais de mux
 
@@ -159,7 +160,7 @@ architecture sparc_arc of sparc is
 
     signal increment_of_one : std_logic_vector(4 downto 0) := "00001";
     signal current_instruction_address : std_logic_vector(4 downto 0) := "00000";
-    signal pc_adder_out : std_logic_vector(4 downto 0); 
+    signal pc_adder_out : std_logic_vector(4 downto 0);
 
     --------------------------------------------------------------------------
     -- Definicao de datapath -------------------------------------------------
@@ -178,7 +179,7 @@ architecture sparc_arc of sparc is
 
     u_pc_adder: adder port map(
                                 src_a => current_instruction_address, -- o bootstrap do processador é feito aqui: faz-se o drive da primeira instrução e ele se desenrola a partir disso
-                                src_b => increment_of_one, 
+                                src_b => increment_of_one,
                                 sum  => pc_adder_out -- essa saida deve ir ao mux para beq
                                );
 
@@ -189,7 +190,7 @@ architecture sparc_arc of sparc is
                                                 next_instruction_address => pc_adder_out,
                                                 current_instruction_address => current_instruction_address
                                                 );
-    
+
     -- instancia de memoria de instrucoes
 
     u_instruction_memory: instruction_memory port map(
@@ -200,28 +201,43 @@ architecture sparc_arc of sparc is
 
     -- instancia de banco de registradores
 
+    --u_register_file: register_file port map(
+    --                                         ra_1 => rs_1,
+    --                                         ra_2 => rs_2,
+    --                                         wa_3 => rd,
+    --                                         clk => clk,
+    --                                         we => register_we,
+    --                                         wa_3_data => wa_3_data,
+    --                                         ra_1_data => ra_1_data,
+    --                                         ra_2_data => ra_2_data);
+
     u_register_file: register_file port map(
-                                             ra_1 => rs_1,
-                                             ra_2 => rs_2,
-                                             wa_3 => rd,
+                                             ra_1 => instruction(18 downto 14),
+                                             ra_2 => instruction(4 downto 0),
+                                             wa_3 => instruction(29 downto 25),
                                              clk => clk,
                                              we => register_we,
                                              wa_3_data => wa_3_data,
                                              ra_1_data => ra_1_data,
                                              ra_2_data => ra_2_data);
+
     -- instancia de extensor de sinais
 
+    -- u_signex: signex port map(
+    --                       signex_in =>  imm, -- signex_in
+    --                        signex_out =>  signex_out -- signex_out
+    --                        );
     u_signex: signex port map(
-                             signex_in =>  imm, -- signex_in
+                             signex_in =>  instruction(12 downto 0), -- signex_in
                              signex_out =>  signex_out -- signex_out
                              );
-    
+
     -- instancia de mux de alu
 
     u_alu_mux: mux port map(
                             a => ra_2_data, -- mux_in_1
                             b => signex_out, -- mux_in_2
-                            sel => i, -- mux_sel
+                            sel => instruction(13), -- mux_sel
                             e  => alu_mux_out); -- mux_out
 
     -- instancia de alu
@@ -231,18 +247,26 @@ architecture sparc_arc of sparc is
                         src_b => alu_mux_out,
                         shift_amount => shift_amount,
                         alu_control => alu_control,
-                        alu_result => wa_3_data, -- saida de alu é mapeada para endereço de escrita de registrador ou dados. ver como generalizar nome desse sinal
+                        alu_result => alu_result, -- saida de alu é mapeada para endereço de escrita de registrador ou dados. ver como generalizar nome desse sinal
                         zero => zero
                      );
 
     -- instancia de memoria de dados
 
     u_data_mem: data_memory port map(
-                                     data_address => wa_3_data(4 downto 0), -- saida de alu; enderacamento eh feito em 5 bits
+                                     data_address => alu_result(4 downto 0), -- saida de alu; enderacamento eh feito em 5 bits
                                      clk => clk,
                                      we => data_we,
                                      write_data => ra_1_data,
                                      data => data
                                     );
+
+    -- instancia de mux de escrita em registrador
+
+    u_regwrite_mux: mux port map(
+                                 a => data, -- mux_in_1
+                                 b => alu_result, -- mux_in_2
+                                 sel => regwrite_source, -- mux_sel
+                                 e  => wa_3_data); -- mux_out
 
 end sparc_arc;
