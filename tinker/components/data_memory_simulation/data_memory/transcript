@@ -1,0 +1,23 @@
+# vsim work.tb_data_memory 
+# Start time: 10:13:44 on Mar 07,2021
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.std_logic_arith(body)
+# Loading ieee.std_logic_unsigned(body)
+# Loading ieee.numeric_std(body)
+# Loading work.tb_data_memory(tb)
+# Loading ieee.numeric_std_unsigned(body)
+# Loading work.data_memory(data_arc)
+do tb_data_memory.vhd
+# ** Error: bad option "IEEE": must be blank, cget, configure, copy, data, get, put, read, redither, transparency, or write
+# Error in macro ./tb_data_memory.vhd line 1
+# bad option "IEEE": must be blank, cget, configure, copy, data, get, put, read, redither, transparency, or write
+#     while executing
+# "library IEEE"
+view wave
+# .main_pane.wave.interior.cs.body.pw.wf
+add wave *
+run 1us
+# End time: 10:14:46 on Mar 07,2021, Elapsed time: 0:01:02
+# Errors: 1, Warnings: 0

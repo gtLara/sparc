@@ -8,46 +8,45 @@ z2
 !i10e 25
 !i10f 100
 cModel Technology
-Z0 d/home/gabriel/2020-2/aoc/code/tp_2/tinker/data_memory_simulation
+d/home/gabriel/2020-2/aoc/code/tp_2/tinker/data_memory_simulation
 Edata_memory
-Z1 w1614902312
-Z2 DPx4 ieee 20 numeric_std_unsigned 0 22 L9z`>=>LNY9h8oAIomUKm3
-Z3 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
-Z4 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
-Z5 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
-Z6 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
-Z7 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
-!i122 4
-R0
+Z0 w1615126577
+Z1 DPx4 ieee 20 numeric_std_unsigned 0 22 L9z`>=>LNY9h8oAIomUKm3
+Z2 DPx4 ieee 11 numeric_std 0 22 aU^R8eGcicLcUFIaBQSL>3
+Z3 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
+Z4 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+Z5 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z6 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 10
+Z7 d/home/gabriel/2020-2/aoc/code/tp_2/tinker/components/data_memory_simulation
 Z8 8data_memory/data_memory.vhd
 Z9 Fdata_memory/data_memory.vhd
 l0
 L7 1
-VL43JCcAXCDSP`2kg83N6S0
+V4@H`DJT??Vd4C`JCK?1QX3
 !s100 Qf=z7nNi2zoS76mf_EAEe1
 Z10 OV;C;2020.3;71
 32
-Z11 !s110 1614903423
+Z11 !s110 1615126580
 !i10b 1
-Z12 !s108 1614903423.000000
-Z13 !s90 -check_synthesis|data_memory/data_memory.vhd|data_memory/tb_data_memory.vhd|
+Z12 !s108 1615126579.000000
+Z13 !s90 data_memory/data_memory.vhd|data_memory/tb_data_memory.vhd|
 Z14 !s107 data_memory/tb_data_memory.vhd|data_memory/data_memory.vhd|
 !i113 1
-Z15 o-check_synthesis
-Z16 tExplicit 1 CvgOpt 0
+Z15 tExplicit 1 CvgOpt 0
 Adata_arc
+R1
 R2
 R3
 R4
 R5
 R6
-R7
-Z17 DEx4 work 11 data_memory 0 22 L43JCcAXCDSP`2kg83N6S0
-!i122 4
-l27
-Z18 L19 34
-Z19 VUI>ZDz7[mCkD4BnU[7i=20
-Z20 !s100 f@dC[Tb<FP]OmneJ9P<m<3
+Z16 DEx4 work 11 data_memory 0 22 4@H`DJT??Vd4C`JCK?1QX3
+!i122 10
+l30
+Z17 L19 37
+VAIz>5^d1@EhBAXC>l<3zG2
+!s100 PZ=_jJQE93FhZ>gmfoUeo2
 R10
 32
 R11
@@ -57,21 +56,20 @@ R13
 R14
 !i113 1
 R15
-R16
 Etb_data_memory
-Z21 w1614903420
+Z18 w1615126304
+R2
 R3
 R4
 R5
 R6
+!i122 10
 R7
-!i122 4
-R0
-Z22 8data_memory/tb_data_memory.vhd
-Z23 Fdata_memory/tb_data_memory.vhd
+Z19 8data_memory/tb_data_memory.vhd
+Z20 Fdata_memory/tb_data_memory.vhd
 l0
 L7 1
-VioMR2@AM[Y1E_`@^YCh;G3
+VE[kH_WMT;L[E<f4`b5bI70
 !s100 ^]Kd]WE2n4j?62^mzohLE1
 R10
 32
@@ -82,19 +80,18 @@ R13
 R14
 !i113 1
 R15
-R16
 Atb
+R2
 R3
 R4
 R5
 R6
-R7
-Z24 DEx4 work 14 tb_data_memory 0 22 ioMR2@AM[Y1E_`@^YCh;G3
-!i122 4
+Z21 DEx4 work 14 tb_data_memory 0 22 E[kH_WMT;L[E<f4`b5bI70
+!i122 10
 l40
-L10 80
-V]YF@Ef2U>n;5lfo;cm>271
-!s100 B7dIldZ1@QVhbDKW>?b0z2
+Z22 L10 67
+Z23 VKJUFkJNjP`bmafN4`PJea0
+Z24 !s100 HUej2S[8217zCJ7E>B]`i2
 R10
 32
 R11
@@ -104,4 +101,3 @@ R13
 R14
 !i113 1
 R15
-R16

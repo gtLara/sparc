@@ -63,23 +63,12 @@ architecture tb of tb_data_memory is
 
                 wait for period;
 
-                we <= '1';
-                write_data <= "00000000000000000000000000000100";
-                data_address <= "00001";
-
-                wait for period;
-
-                write_data <= "00000000000000000000000000000001";
-                data_address <= "00010";
-
-                wait for period;
-
                 we <= '0';
                 data_address <= "00001";
 
                 wait for period;
 
-                data_address <= "00010";
+                data_address <= "00000";
 
                 wait for period;
 

@@ -1,5 +1,5 @@
 # vsim work.tb_data_memory 
-# Start time: 21:17:11 on Mar 04,2021
+# Start time: 11:16:27 on Mar 07,2021
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
@@ -9,7 +9,14 @@
 # Loading work.tb_data_memory(tb)
 # Loading ieee.numeric_std_unsigned(body)
 # Loading work.data_memory(data_arc)
-do data_tb.do
+view wave
 # .main_pane.wave.interior.cs.body.pw.wf
-# End time: 21:29:00 on Mar 04,2021, Elapsed time: 0:11:49
+add wave *
+run 1us
+restart
+view wave
+# .main_pane.wave.interior.cs.body.pw.wf
+add wave -r uut/*
+run 1us
+# End time: 11:18:24 on Mar 07,2021, Elapsed time: 0:01:57
 # Errors: 0, Warnings: 0
