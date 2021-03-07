@@ -20,9 +20,12 @@ architecture data_arc of data_memory is
 
     -- cria memoria ram 32x32 ; armazena 32 palavras de 32 bits
 
-    type ram_32x32 is array (31 downto 0) of std_logic_vector(31 downto 0);
+    type ram_4x32 is array (0 to 3) of std_logic_vector(31 downto 0);
 
-    signal mem: ram_32x32 := (others => (others => '1')); -- preenche a memoria com zeros
+    signal mem: ram_4x32 := ("00000000000000000000000000000100",
+                             "00000000000000000000000000000001",
+                             "00000000000000000000000000000000",
+                             "00000000000000000000000000000000");
 
     begin
 
@@ -41,7 +44,7 @@ architecture data_arc of data_memory is
 
         -- processo de leitura
 
-        read: process(data_address)   -- sensivel a todos os sinais
+        read: process(data_address, clk, write_data)   -- sensivel a todos os sinais
 
         begin
 
