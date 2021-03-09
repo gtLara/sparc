@@ -7,7 +7,7 @@ São 8 registradores globais + N janelas de 16 registradores sobrepostas. Uma im
 ![sobreposicao_regs](https://github.com/gtLara/sparc/blob/master/images/sobreposi%C3%A7%C3%A3o_regs.jpg) ![roda_das_janelas](https://github.com/gtLara/sparc/blob/master/images/Roda_das_janelas.jpg)
 ##### Dois registradores Program Counter 
 A arquitetura SPARC prevê dois Program Counters: nPC e PC. PC guarda o endereço da instrução a ser executada no ciclo, enquanto nPC guarda o endereço da instrução seguinte.
-##### Branch com comparação anterior e intrução atrasada
+##### Branch com comparação anterior e instrução atrasada
 As intruções de Branch na arquitetura envolvem, para serem usadas, outras duas instruções. A primeira dessas é uma instrução que avalia a condição do branch `cmp`, antes da própria instrução de branch (`bl` por exemplo). A segunda é uma instrução que pode ou não ser executada, e fica logo depois da instrução de branch. Isso é possível porque o branch altera nPC, e não PC.
 ##### Demais características
 Diversas características da arquitetura SPARC não foram citadas por não serem relevantes em nossa aplicação. Entre elas: Coprocessador, Unidade de Ponto Flutuante, Registradores de Estado, Traps, mudança de contexto usando as janelas de registradores, espaço para registradores extras, etc.
