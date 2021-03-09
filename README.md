@@ -13,7 +13,7 @@ As intruções de Branch na arquitetura envolvem, para serem usadas, outras duas
 Diversas características da arquitetura SPARC não foram citadas por não serem relevantes em nossa aplicação. Entre elas: Coprocessador, Unidade de Ponto Flutuante, Registradores de Estado, Traps, etc.
 ## Algoritmo utilizado
 O algoritmo de teste de paridade é bastante simples. Se o número de bits '1' no dado de 8 bits for par, a saída é '1'. Caso contrário, é zero. Basta fazer a operação XOR do bit de saída (inicialmente em '1') com cada bit do dado, um após o outro, que a saída já terá o resultado. Em seguida o código implementado.
-```C
+```
 ! Instruções a serem usadas:
 ! ld - pra iniciar variáveis
 ! add - pro for
