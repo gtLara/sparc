@@ -8,9 +8,10 @@ entity alu is
     port(
         src_a : in std_logic_vector(31 downto 0); -- entrada a
         src_b: in std_logic_vector(31 downto 0); -- entraba b
-        shift_amount: in std_logic_vector(5 downto 0); -- quantidade de deslocamento: pode deslocar 32 bits
+        shift_amount: in std_logic_vector(4 downto 0); -- quantidade de deslocamento: pode deslocar 32 bits
         alu_control : in std_logic_vector(3 downto 0); -- controle de operação
         alu_result : out std_logic_vector(31 downto 0); -- resultado de operação
+        negative: out std_logic; -- sinaliza se resultado foi negativo
         zero : out std_logic); -- bandeira que indica se resultado foi zero
 
 end alu;
@@ -63,5 +64,7 @@ begin
 
         zero <= '1' when result = all_zeros else
                 '0';
+
+        negative <= result(31);
 
 end alu_arc;
