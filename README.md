@@ -19,4 +19,23 @@ De maneira geral, as decisões de projeto foram tomadas tendo em vista a constru
 4. O manual dava liberdade de implementar tanto uma memória única para dados e instruções quanto usar duas memórias separadas. Optamos por separar a memória de dados da memória de instruções.
 5. O conjunto de operações da ALU foi reduzido para atender às nossas necessidades.   
 ## Implementação do processador
+O processador foi implementado em linguagem VHDL e verificado utilizando o ModelSim. A figura `X` mostra o processador desenvolvido com o caminho de dados e a unidade de controle.\
+(imagem)\
+Em seguida uma breve descrição de cada componente. (uma frase pra cada um, nada longo demais)
+##### ALU
+(listar os operações que a ALU faz e foto com a "pinagem")
+##### Banco de registradores
+(leitura assíncrona e escrita síncrona com enable, etc. "pinagem")
+##### Unidade de Controle
+(só "pinagem" já serve)
+##### Memórias
+(endereçamento, etc)
+##### Extensor de sinal
+(só os pinos)
+##### Somador
+(com ou sem sinal, qtos bits)
+##### PC
+(qtos bits, se tem enable)
+##### PSR 
+(qtos bits, se tem enable)
 ## Resultados e simulações
