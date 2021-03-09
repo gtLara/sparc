@@ -6,7 +6,7 @@ use ieee.NUMERIC_STD.all;
 entity signex is
     generic(size: integer := 12); -- na verdade é tamanho - 1
     port(
-         signex_in: in std_logic_vector(size  downto 0);
+         signex_in: in std_logic_vector(size downto 0);
          signex_out: out std_logic_vector(31 downto 0));
 end signex;
 
