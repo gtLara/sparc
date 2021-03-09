@@ -1,0 +1,50 @@
+m255
+K4
+z2
+!s11e vcom 2020.3 2020.07, Jul 22 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/gabriel/2020-2/aoc/code/tp_2/tinker/components/mux_simulation/mux
+Emux
+Z1 w1615317160
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
+!i122 2
+R0
+Z4 8mux.vhd
+Z5 Fmux.vhd
+l0
+L4 1
+VNQ?F[?T_7USEHzi7NQiR[1
+!s100 A;Y@377B`PX0`7kNJAB_M0
+Z6 OV;C;2020.3;71
+32
+Z7 !s110 1615317164
+!i10b 1
+Z8 !s108 1615317164.000000
+Z9 !s90 mux.vhd|
+Z10 !s107 mux.vhd|
+!i113 1
+Z11 tExplicit 1 CvgOpt 0
+Amux_arc
+R2
+R3
+Z12 DEx4 work 3 mux 0 22 NQ?F[?T_7USEHzi7NQiR[1
+!i122 2
+l14
+Z13 L12 8
+V0f?`2C>ab2SkJ]=J6]LUE0
+!s100 g6ZVAK=QXU6FMGi`S1JXl0
+R6
+32
+R7
+!i10b 1
+R8
+R9
+R10
+!i113 1
+R11
