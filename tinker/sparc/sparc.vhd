@@ -1,4 +1,10 @@
--- TODO: implementar datapath expandido, expandir controle, implementar controle
+-- TODO: verificar programa reduzido, implementar datapath expandido, expandir controle
+--  a verificao do programa reduzido se resume ao acompanhamento das instrucoes
+--  aritmeticas nessa altura deviam funcionar perfeitamente
+--
+--  resta implementar datapath para a instrucao de branch e expandir controle
+--  para a mesma finalidade. o ultimo desses itens deve se resumir a adicao
+--  de um mux
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -9,12 +15,12 @@ entity sparc is
     port(
         clk : in std_logic;
         reset : in std_logic;
-        set : in std_logic;
+        set : in std_logic
         -- control
-        data_we : in std_logic;
-        register_we : in std_logic;
-        regwrite_source : in std_logic; -- if zero writes rd with data from data memory; if 1, from alu output
-        alu_control : in std_logic_vector(3 downto 0) --control signal
+        -- data_we : in std_logic;
+        -- register_we : in std_logic;
+        -- regwrite_source : in std_logic; -- if zero writes rd with data from data memory; if 1, from alu output
+        -- alu_control : in std_logic_vector(3 downto 0) --control signal
         );
 end sparc;
 
@@ -23,6 +29,17 @@ architecture sparc_arc of sparc is
     --------------------------------------------------------------------------
     -- Declaracao de componentes ---------------------------------------------
     --------------------------------------------------------------------------
+
+    component control is
+        port(
+             opcode : in std_logic_vector(5 downto 0);
+             format : in std_logic_vector(1 downto 0);
+             data_we : out std_logic;
+             branch : out std_logic;
+             register_we : out std_logic;
+             regwrite_source : out std_logic;
+             alu_control : out std_logic_vector(3 downto 0));
+    end component;
 
     component program_counter is
         port(
@@ -49,7 +66,7 @@ architecture sparc_arc of sparc is
     port(
         src_a : in std_logic_vector(31 downto 0); -- entrada a
         src_b: in std_logic_vector(31 downto 0); -- entraba b
-        shift_amount: in std_logic_vector(5 downto 0); -- quantidade de deslocamento: pode deslocar 32 bits
+        shift_amount: in std_logic_vector(4 downto 0); -- quantidade de deslocamento: pode deslocar 32 bits
         alu_control : in std_logic_vector(3 downto 0); -- controle de operação
         alu_result : out std_logic_vector(31 downto 0); -- resultado de operação
         zero : out std_logic); -- bandeira que indica se resultado foi zero
@@ -132,7 +149,13 @@ architecture sparc_arc of sparc is
 
     --------------------------------------------------------------------------
 
-    -- o restante da instrucao vai para controle
+    -- sinais de controle
+
+     signal data_we :  std_logic;
+     signal branch :  std_logic;
+     signal register_we :  std_logic;
+     signal regwrite_source :  std_logic;
+     signal alu_control :  std_logic_vector(3 downto 0);
 
     -- sinais de extensor de sinais
 
@@ -175,7 +198,19 @@ architecture sparc_arc of sparc is
     -- Instanciacao de componentes -------------------------------------------
     --------------------------------------------------------------------------
 
-    -- instancio do somador de contador de programa
+    -- instancia unidade de controle
+
+    u_control: control port map(
+                                 opcode => instruction(24 downto 19),
+                                 format => instruction(31 downto 30),
+                                 data_we => data_we,
+                                 branch => branch,
+                                 register_we => register_we,
+                                 regwrite_source => regwrite_source,
+                                 alu_control => alu_control
+                               );
+
+    -- instancia do somador de contador de programa
 
     u_pc_adder: adder port map(
                                 src_a => current_instruction_address, -- o bootstrap do processador é feito aqui: faz-se o drive da primeira instrução e ele se desenrola a partir disso
@@ -245,7 +280,7 @@ architecture sparc_arc of sparc is
     u_alu: alu port map(
                         src_a => ra_1_data,
                         src_b => alu_mux_out,
-                        shift_amount => shift_amount,
+                        shift_amount => instruction(4 downto 0),
                         alu_control => alu_control,
                         alu_result => alu_result, -- saida de alu é mapeada para endereço de escrita de registrador ou dados. ver como generalizar nome desse sinal
                         zero => zero
@@ -264,9 +299,11 @@ architecture sparc_arc of sparc is
     -- instancia de mux de escrita em registrador
 
     u_regwrite_mux: mux port map(
-                                 a => data, -- mux_in_1
-                                 b => alu_result, -- mux_in_2
+                                 a => alu_result, -- mux_in_2
+                                 b => data, -- mux_in_1
                                  sel => regwrite_source, -- mux_sel
                                  e  => wa_3_data); -- mux_out
+
+
 
 end sparc_arc;
