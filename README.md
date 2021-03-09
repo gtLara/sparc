@@ -10,7 +10,7 @@ A arquitetura SPARC prevê dois Program Counters: nPC e PC. PC guarda o endereç
 ##### Branch com comparação anterior e instrução atrasada
 As intruções de Branch na arquitetura envolvem, para serem usadas, outras duas instruções. A primeira dessas é uma instrução que avalia a condição do branch `cmp`, antes da própria instrução de branch (`bl` por exemplo). A segunda é uma instrução que pode ou não ser executada, e fica logo depois da instrução de branch. Isso é possível porque o branch altera nPC, e não PC.
 ##### Demais características
-Diversas características da arquitetura SPARC não foram citadas por não serem relevantes em nossa aplicação. Entre elas: Coprocessador, Unidade de Ponto Flutuante, Registradores de Estado, Traps, mudança de contexto usando as janelas de registradores, espaço para registradores extras, etc.
+Diversas características da arquitetura SPARC não foram citadas por não serem relevantes em nossa aplicação. Entre elas: Coprocessador, Unidade de Ponto Flutuante, Registradores de Estado, Traps, etc.
 ## Decisões de projeto
 De maneira geral, as decisões de projeto foram tomadas tendo em vista a construção do mínimo de componentes necessário para a execução do algoritmo. As principais decisões estão listadas a seguir:
 1. Como usaremos uma quantidade muito pequena de registradores e não precisaremos de mudar de contexto em momento algum, reduzimos o banco de registradores para 32 registradores, havendo só uma janela. São 8 globais (%g0 ~ %g7) e 24 de uso geral em três blocos de 8 (%o0 ~%o7, %l0 ~ %l7, %i0 ~ %i7).
