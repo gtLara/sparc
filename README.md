@@ -11,6 +11,49 @@ A arquitetura SPARC prevê dois Program Counters: nPC e PC. PC guarda o endereç
 As intruções de Branch na arquitetura envolvem, para serem usadas, outras duas instruções. A primeira dessas é uma instrução que avalia a condição do branch `cmp`, antes da própria instrução de branch (`bl` por exemplo). A segunda é uma instrução que pode ou não ser executada, e fica logo depois da instrução de branch. Isso é possível porque o branch altera nPC, e não PC.
 ##### Demais características
 Diversas características da arquitetura SPARC não foram citadas por não serem relevantes em nossa aplicação. Entre elas: Coprocessador, Unidade de Ponto Flutuante, Registradores de Estado, Traps, etc.
+## Algoritmo utilizado
+O algoritmo de teste de paridade é bastante simples. Se o número de bits '1' no dado de 8 bits for par, a saída é '1'. Caso contrário, é zero. Basta fazer a operação XOR do bit de saída (inicialmente em '1') com cada bit do dado, um após o outro, que a saída já terá o resultado. Em seguida o código implementado.
+```assembly
+! Instruções a serem usadas:
+! ld - pra iniciar variáveis
+! add - pro for
+! cmp a,b = subcc a, b, %g0 - para mudar o icc e usar o bl
+! bl,a - "Branch on Less" com annul ",a" pro for
+! srl
+! xor
+! and
+
+! dilaceramos o banco de registradores, só usamos 32 + 1:
+! %g0 ~ %g7 = %r0  ~ %r7   - registradores globais
+! %o0 ~ %07 = %r8  ~ %r15  - registradores Out
+! %l0 ~ %l7 = %r16 ~ %r23 - registradores locais
+! %i0 ~ %i7 = %r24 ~ %r31 - registradores in
+! %g0 = %r0 = constante 0
+! %psr - registrador de estado, usa ele no bl
+! tem o PC tbm, mas ele sempre existe
+
+!seções devem ser iniciadas assim:
+.section ".data"
+    dados:  .word 4    !dado de 8bits a ser analisado 
+    crc:    .word 1    !se dados = 0, crc = 1 e paridade par
+    
+.section ".text"
+
+main:   ld crc , %l0        ! traz os dados da memória de dados
+        ld dados , %l1      ! para os registradores locais
+        
+        add %g0, 0, %l7   ! inicia %l7 = i = 0        
+
+for:    and %l1, 1, %l2     ! pega o LSB do dados atual e poe em %l2
+        xor %l0, %l2, %l0   ! atualiza o crc com o bit de dados
+        srl %l1, 1, %l1     ! dados >>= 1 
+
+        add %l7, 1, %l7     ! incrementa i
+        cmp %l7 , 8         ! compara i com 8 e modifica o icc
+        bl for; nop         ! se i < 8 volta pro for, a instrução de delay tem que existir de qualquer jeito,
+                            ! mas a gente vai ignorar isso no caminho de dados 
+!FIM, o resultado com crc fica em %l0
+```
 ## Decisões de projeto
 De maneira geral, as decisões de projeto foram tomadas tendo em vista a construção do mínimo de componentes necessário para a execução do algoritmo. As principais decisões estão listadas a seguir:
 1. Como usaremos uma quantidade muito pequena de registradores e não precisaremos de mudar de contexto em momento algum, reduzimos o banco de registradores para 32 registradores, havendo só uma janela. São 8 globais (%g0 ~ %g7) e 24 de uso geral em três blocos de 8 (%o0 ~%o7, %l0 ~ %l7, %i0 ~ %i7).
