@@ -39,3 +39,5 @@ Em seguida uma breve descrição de cada componente. (uma frase pra cada um, nad
 ##### PSR 
 (qtos bits, se tem enable)
 ## Resultados e simulações
+## Referências
+The SPARC Architecture Manual, Version 8 disponível em [https://sparc.org/](https://sparc.org/).
