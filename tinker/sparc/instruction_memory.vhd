@@ -18,7 +18,7 @@ end instruction_memory;
 
 architecture instruction_memory_arc of instruction_memory is
 
-    type ram_32x32 is array (31 downto 0) of std_logic_vector(31 downto 0); -- 32 palavras  de 32 bits cada
+    type ram_32x32 is array (0 to 31) of std_logic_vector(31 downto 0); -- 32 palavras  de 32 bits cada
     signal mem: ram_32x32;
 
     file program : text open read_mode is "program.txt";
