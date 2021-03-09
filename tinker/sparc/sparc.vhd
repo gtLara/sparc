@@ -1,6 +1,4 @@
--- TODO: verificar programa reduzido, implementar datapath expandido, expandir controle
---  a verificao do programa reduzido se resume ao acompanhamento das instrucoes
---  aritmeticas nessa altura deviam funcionar perfeitamente
+-- TODO: implementar datapath expandido, expandir controle
 --
 --  resta implementar datapath para a instrucao de branch e expandir controle
 --  para a mesma finalidade. o ultimo desses itens deve se resumir a adicao
@@ -16,11 +14,6 @@ entity sparc is
         clk : in std_logic;
         reset : in std_logic;
         set : in std_logic
-        -- control
-        -- data_we : in std_logic;
-        -- register_we : in std_logic;
-        -- regwrite_source : in std_logic; -- if zero writes rd with data from data memory; if 1, from alu output
-        -- alu_control : in std_logic_vector(3 downto 0) --control signal
         );
 end sparc;
 
@@ -38,8 +31,7 @@ architecture sparc_arc of sparc is
              branch : out std_logic;
              register_we : out std_logic;
              regwrite_source : out std_logic;
-             alu_control : out std_logic_vector(3 downto 0));
-    end component;
+             alu_control : out std_logic_vector(3 downto 0)); end component;
 
     component program_counter is
         port(
@@ -50,8 +42,9 @@ architecture sparc_arc of sparc is
     end component;
 
     component signex is
+        generic(size : integer := 12);
         port(
-             signex_in: in std_logic_vector(12 downto 0);
+             signex_in: in std_logic_vector(size downto 0);
              signex_out: out std_logic_vector(31 downto 0));
     end component;
 
@@ -179,11 +172,13 @@ architecture sparc_arc of sparc is
 
     signal data: std_logic_vector(31 downto 0);
 
-    -- sinais de contador de programa e seu somador
+    -- sinais de contador de programa e afins
 
     signal increment_of_one : std_logic_vector(4 downto 0) := "00001";
     signal current_instruction_address : std_logic_vector(4 downto 0) := "00000";
-    signal pc_adder_out : std_logic_vector(4 downto 0);
+    signal pc_adder_short_out : std_logic_vector(4 downto 0);
+    signal pc_adder_long_out : std_logic_vector(31 downto 0);
+    signal pc_mux_out : std_logic_vector(31 downto 0);
 
     --------------------------------------------------------------------------
     -- Definicao de datapath -------------------------------------------------
@@ -215,36 +210,44 @@ architecture sparc_arc of sparc is
     u_pc_adder: adder port map(
                                 src_a => current_instruction_address, -- o bootstrap do processador é feito aqui: faz-se o drive da primeira instrução e ele se desenrola a partir disso
                                 src_b => increment_of_one,
-                                sum  => pc_adder_out -- essa saida deve ir ao mux para beq
+                                sum  => pc_adder_short_out -- essa saida deve ir ao mux para beq
                                );
+
+    -- instancia de extensor de sinais para permitir selecao entre instrucao immediata ou iterada
+
+    u_pc_mux_signex: signex
+                         generic map (size => 4)
+                         port map(
+                                  signex_in => pc_adder_short_out,
+                                  signex_out => pc_adder_long_out
+                                 );
+
+    -- instancia mux para determinar qual sera a proxima instrucao do pc
+
+   u_pc_mux: mux port map(
+                           a => pc_adder_long_out,
+                           b => signex_out,
+                           sel => branch,
+                           e => pc_mux_out
+                           );
 
     -- instancia contador de programa
 
     u_program_counter: program_counter port map(
                                                 clk => clk,
-                                                next_instruction_address => pc_adder_out,
+                                                next_instruction_address => pc_mux_out(4 downto 0),
                                                 current_instruction_address => current_instruction_address
                                                 );
 
     -- instancia de memoria de instrucoes
 
     u_instruction_memory: instruction_memory port map(
-                                                      set  => set,
+                                                      set => set,
                                                       address => current_instruction_address,
                                                       instruction => instruction
                                                      );
 
     -- instancia de banco de registradores
-
-    --u_register_file: register_file port map(
-    --                                         ra_1 => rs_1,
-    --                                         ra_2 => rs_2,
-    --                                         wa_3 => rd,
-    --                                         clk => clk,
-    --                                         we => register_we,
-    --                                         wa_3_data => wa_3_data,
-    --                                         ra_1_data => ra_1_data,
-    --                                         ra_2_data => ra_2_data);
 
     u_register_file: register_file port map(
                                              ra_1 => instruction(18 downto 14),
@@ -258,10 +261,6 @@ architecture sparc_arc of sparc is
 
     -- instancia de extensor de sinais
 
-    -- u_signex: signex port map(
-    --                       signex_in =>  imm, -- signex_in
-    --                        signex_out =>  signex_out -- signex_out
-    --                        );
     u_signex: signex port map(
                              signex_in =>  instruction(12 downto 0), -- signex_in
                              signex_out =>  signex_out -- signex_out
@@ -303,7 +302,5 @@ architecture sparc_arc of sparc is
                                  b => data, -- mux_in_1
                                  sel => regwrite_source, -- mux_sel
                                  e  => wa_3_data); -- mux_out
-
-
 
 end sparc_arc;
