@@ -13,7 +13,8 @@ entity sparc is
     port(
         clk : in std_logic;
         reset : in std_logic;
-        set : in std_logic
+        set : in std_logic;
+        instruction_address : out std_logic_vector(4 downto 0)
         );
 end sparc;
 
@@ -67,7 +68,7 @@ architecture sparc_arc of sparc is
         zero : out std_logic); -- bandeira que indica se resultado foi zero
 
     end component;
-        
+
     component ps_register is -- registrador que armazena endereços de instruções
 
         port(
@@ -313,7 +314,7 @@ architecture sparc_arc of sparc is
                      );
 
     -- branch and
-    
+
     u_branch_and : and_gate port map(
                                      and_in_a => branch,
                                      and_in_b => last_negative,
@@ -321,7 +322,7 @@ architecture sparc_arc of sparc is
                                      );
 
     -- instancia de memoria de dados
-    
+
     u_ps_register: ps_register port map(
                                          psr_we => psr_we, -- tratado por controle
                                          next_input => negative,
@@ -344,5 +345,7 @@ architecture sparc_arc of sparc is
                                  b => data, -- mux_in_1
                                  sel => regwrite_source, -- mux_sel
                                  e  => wa_3_data); -- mux_out
+
+    instruction_address <= pc_mux_out(4 downto 0);
 
 end sparc_arc;
