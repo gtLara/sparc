@@ -34,7 +34,7 @@ architecture program_counter_arc of program_counter is
 
         end process write;
 
-        -- processo de leituraç
+        -- processo de leitura
 
         read: process(clk, next_instruction_address) -- sensivel a todos os sinais
                       
