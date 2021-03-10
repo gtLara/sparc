@@ -11,6 +11,7 @@ entity control is
          branch : out std_logic;
          register_we : out std_logic;
          regwrite_source : out std_logic;
+         psr_we : out std_logic;
          alu_control : out std_logic_vector(3 downto 0));
 end entity;
 
@@ -26,6 +27,7 @@ begin
                     alu_control <= "0000";
                     branch <= '0';
                     regwrite_source <= '1';
+                    psr_we <= '0';
 
                 when "10" =>-- arithmetic instructions
                     case(opcode) is
@@ -34,26 +36,31 @@ begin
                             alu_control <= "0000";
                             branch <= '0';
                             regwrite_source <= '0';
+                            psr_we <= '0';
 
                         when "010001" => -- and
                             alu_control <= "0010";
                             branch <= '0';
                             regwrite_source <= '0';
+                            psr_we <= '0';
 
                         when "000111" => -- xor
                             branch <= '0';
                             alu_control <= "0100";
                             regwrite_source <= '0';
+                            psr_we <= '0';
 
                         when "100110" => -- srl
                             alu_control <= "0111";
                             branch <= '0';
                             regwrite_source <= '0';
+                            psr_we <= '0';
 
-                        when "010100" => -- srl
+                        when "010100" => -- subcc
                             alu_control <= "0001";
                             branch <= '0';
                             regwrite_source <= '0';
+                            psr_we <= '1';
 
                         when others => null; -- deadcase
 
@@ -61,6 +68,7 @@ begin
 
                 when "00" =>
                     alu_control <= "0000";
+                    psr_we <= '0';
                     branch <= '1';
 
                 when others => null; -- deadcase

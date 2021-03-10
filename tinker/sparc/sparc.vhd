@@ -30,6 +30,7 @@ architecture sparc_arc of sparc is
              data_we : out std_logic;
              branch : out std_logic;
              register_we : out std_logic;
+             psr_we : out std_logic;
              regwrite_source : out std_logic;
              alu_control : out std_logic_vector(3 downto 0)); end component;
 
@@ -62,8 +63,28 @@ architecture sparc_arc of sparc is
         shift_amount: in std_logic_vector(4 downto 0); -- quantidade de deslocamento: pode deslocar 32 bits
         alu_control : in std_logic_vector(3 downto 0); -- controle de operação
         alu_result : out std_logic_vector(31 downto 0); -- resultado de operação
+        negative : out std_logic; -- bandeira que indica se resultado foi negativo
         zero : out std_logic); -- bandeira que indica se resultado foi zero
 
+    end component;
+        
+    component ps_register is -- registrador que armazena endereços de instruções
+
+        port(
+             psr_we : in std_logic;
+             next_input : in std_logic;
+             clk : in std_logic;
+             last_input : out std_logic
+            );
+
+    end component;
+
+    component and_gate is
+        port(
+             and_in_a : in std_logic;
+             and_in_b : in std_logic;
+             and_out : out std_logic
+             );
     end component;
 
     component register_file is -- registrador de 32 palavras
@@ -144,11 +165,12 @@ architecture sparc_arc of sparc is
 
     -- sinais de controle
 
-     signal data_we :  std_logic;
-     signal branch :  std_logic;
-     signal register_we :  std_logic;
-     signal regwrite_source :  std_logic;
-     signal alu_control :  std_logic_vector(3 downto 0);
+    signal data_we :  std_logic;
+    signal branch :  std_logic;
+    signal register_we :  std_logic;
+    signal psr_we :  std_logic;
+    signal regwrite_source :  std_logic;
+    signal alu_control :  std_logic_vector(3 downto 0);
 
     -- sinais de extensor de sinais
 
@@ -158,10 +180,13 @@ architecture sparc_arc of sparc is
 
     signal ra_1_data, ra_2_data, wa_3_data : std_logic_vector(31 downto 0) := (others => '0');
 
-    -- sinais de alu
+    -- sinais de alu psr e mecanismo de branch
 
     signal zero : std_logic;
+    signal negative : std_logic;
+    signal last_negative : std_logic;
     signal alu_result : std_logic_vector(31 downto 0);
+    signal actual_branch : std_logic;
 
     -- sinais de mux
 
@@ -202,6 +227,7 @@ architecture sparc_arc of sparc is
                                  branch => branch,
                                  register_we => register_we,
                                  regwrite_source => regwrite_source,
+                                 psr_we => psr_we,
                                  alu_control => alu_control
                                );
 
@@ -227,7 +253,7 @@ architecture sparc_arc of sparc is
    u_pc_mux: mux port map(
                            a => pc_adder_long_out,
                            b => signex_out,
-                           sel => branch,
+                           sel => actual_branch,
                            e => pc_mux_out
                            );
 
@@ -282,10 +308,26 @@ architecture sparc_arc of sparc is
                         shift_amount => instruction(4 downto 0),
                         alu_control => alu_control,
                         alu_result => alu_result, -- saida de alu é mapeada para endereço de escrita de registrador ou dados. ver como generalizar nome desse sinal
+                        negative => negative,
                         zero => zero
                      );
 
+    -- branch and
+    
+    u_branch_and : and_gate port map(
+                                     and_in_a => branch,
+                                     and_in_b => last_negative,
+                                     and_out => actual_branch
+                                     );
+
     -- instancia de memoria de dados
+    
+    u_ps_register: ps_register port map(
+                                         psr_we => psr_we, -- tratado por controle
+                                         next_input => negative,
+                                         clk => clk,
+                                         last_input => last_negative
+                                        );
 
     u_data_mem: data_memory port map(
                                      data_address => alu_result(4 downto 0), -- saida de alu; enderacamento eh feito em 5 bits
