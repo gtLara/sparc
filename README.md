@@ -1,6 +1,6 @@
 # Documentação
 ## Introdução: arquitetura SPARC e o trabalho desenvolvido
-A arquitetura SPARC(Scalable Processor ARChitecture) surgiu em 1987, desenvolvida pela SUN Microsystems. Essa arquitetura se tornou muito popular e até hoje é amplamente utilizada. A arquitetura é aberta e pode ser implementada por qualquer um. Neste trabalho usaremos a versão 8 da SPARC, de 32 bits como inspiração. Devemos fazer um processador ciclo único que execute um algoritmo simples de teste de paridade de bits.
+A arquitetura SPARC(Scalable Processor ARChitecture) é uma arquitetura aberta RISC criada em 1987 pela SUN Microsystems. Ela  se tornou muito popular e até hoje é amplamente utilizada. Neste trabalho usaremos a versão 8 da SPARC, de 32 bits como inspiração para fazer um processador ciclo único que execute um algoritmo simples de teste de paridade de bits.
 ## Características da arquitetura mais relevantes para nossa aplicação:
 ##### Banco de registradores de tamanho variável
 São 8 registradores globais + N janelas de 16 registradores sobrepostas. Uma implementação pode ter de 40 registradores (duas janelas) até 520 registradores (32 janelas). Como há sobreposição de registradores, mostrado nas figuras `X` e `Y`, o número de unidades no hardware é menor. Mais informações sobre as imagens no documento referenciado.\
@@ -8,12 +8,43 @@ São 8 registradores globais + N janelas de 16 registradores sobrepostas. Uma im
 ##### Dois registradores Program Counter 
 A arquitetura SPARC prevê dois Program Counters: nPC e PC. PC guarda o endereço da instrução a ser executada no ciclo, enquanto nPC guarda o endereço da instrução seguinte.
 ##### Branch com comparação anterior e instrução atrasada
-As intruções de Branch na arquitetura envolvem, para serem usadas, outras duas instruções. A primeira dessas é uma instrução que avalia a condição do branch `cmp`, antes da própria instrução de branch (`bl` por exemplo). A segunda é uma instrução que pode ou não ser executada, e fica logo depois da instrução de branch. Isso é possível porque o branch altera nPC, e não PC.
+As intruções de Branch na arquitetura envolvem outras duas instruções. A primeira é uma pseudoinstrução de comparação, `cmp`, que subtrai dois operandos e armazena 4 valores referentes a essa operação, como  existência overflow ou resultado negativo, em um registrador específico, o registrador de estados do processador.  Esses quatro valores serão utilizados como condição para o desvio pela própria instrução de branch (`bl` por exemplo). A segunda é uma instrução que fica logo depois da instrução de branch e pode ou não ser executada. Isso é possível porque o branch altera nPC, e não PC.
 ##### Demais características
 Diversas características da arquitetura SPARC não foram citadas por não serem relevantes em nossa aplicação. Entre elas: Coprocessador, Unidade de Ponto Flutuante, Registradores de Estado, Traps, etc.
 ## Algoritmo utilizado
-O algoritmo de teste de paridade é bastante simples. Se o número de bits '1' no dado de 8 bits for par, a saída é '1'. Caso contrário, é zero. Basta fazer a operação XOR do bit de saída (inicialmente em '1') com cada bit do dado, um após o outro, que a saída já terá o resultado. Em seguida o código implementado.
+O algoritmo de teste de paridade é bastante simples.  Ele retorna o resultado '1' caso o número de bits '1' no dado de 8 bits seja par e '0' caso seja ímpar. Para computar tal resultado, basta fazer a operação XOR do bit de paridade (inicialmente em '1', já que foi utilizada a paridade par) com cada bit do dado, um após o outro. A seguir estão os códigos implementados em C e em Assembly.
 ```
+Código em C
+
+
+/*
+ * Programa de teste de paridade: crc = 1 paridade par e crc = 0 paridade ímpar
+ */
+#include <stdio.h>
+
+boolean crc(){
+  int crc = 1;//se tudo for zero, o crc não se altera e a paridade é par
+  int dados = 0xfb;//somente 8 bits são usados
+  for(int i = 0; i < 8; i++){
+    //faz XOR do CRC com o bit i dos dados (começando do bit zero)
+    /*
+     * exemplo
+     * dados = 0xfb;
+     * dados >> 2 = 0x3e;
+     * ( (dados >> 2) & 0x1 ) = 0;
+     *
+     */
+    crc ^= (dados & 0x1);
+    dados = dados>>1;
+  }
+  return crc;
+}
+```
+
+```
+Código em Assembly do SPARC
+
+
 ! Instruções a serem usadas:
 ! ld - pra iniciar variáveis
 ! add - pro for
