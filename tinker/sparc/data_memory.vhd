@@ -48,7 +48,9 @@ architecture data_arc of data_memory is
 
         begin
 
-            data <= mem(to_integer(data_address));
+            if to_integer(data_address) < 5 then
+                data <= mem(to_integer(data_address));
+            end if;
 
         end process read;
 
