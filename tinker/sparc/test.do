@@ -14,6 +14,6 @@ add wave uut/u_pc_mux/*
 add wave uut/u_branch_and/*
 when {sim:/tb_sparc/uut/u_program_counter/next_instruction_address == "01010"} {
   stop
-  echo "Test: OK"
+  echo "Programa chegou ao fim"
 }
 run -all
