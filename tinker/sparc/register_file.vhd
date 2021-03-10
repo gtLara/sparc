@@ -20,7 +20,7 @@ architecture register_arc of register_file is
 
     -- cria vetor de zeros para registrador 0
 
-    constant zeros : std_logic_vector(31 downto 0) := (others => '0');
+    constant zeros : std_logic_vector(0 to 31) := (others => '0');
 
     -- cria memoria ram
 
