@@ -36,7 +36,11 @@ architecture register_arc of register_file is
 
         if rising_edge(clk) then  -- opera apenas nas subidas de clock
             if (we = '1') then  -- armazena dados apenas se write enable
+                if ( to_integer(wa_3) /= 0 ) then -- se endereco for zero, nao escreve
+
                 mem(to_integer(wa_3)) <= wa_3_data; -- armazena dados
+
+                end if;
             end if;
         end if; -- o sintetizador induz memoria por meio da ausencia de clausulas catch all
 
