@@ -5,7 +5,9 @@
 A arquitetura SPARC(Scalable Processor ARChitecture) é uma arquitetura aberta
 RISC criada em 1987 pela SUN Microsystems. Neste trabalho usaremos a versão 8 da SPARC, de 32
 bits como inspiração para fazer um processador ciclo único que execute um
-algoritmo simples de teste de paridade de bits. Todos os códigos escritos, análises e passos para a conclusão do projeto estão em um repoitório no Github.
+algoritmo simples de teste de paridade de bits. Todos os códigos escritos, 
+análises e passos para a conclusão do projeto estão em um repoitório no Github
+referenciado ao final deste documento.
 ## Características da arquitetura mais relevantes para nossa aplicação:
 ##### Banco de registradores
 de tamanho variável São 8 registradores globais + N janelas de 16 registradores
@@ -442,7 +444,7 @@ a parada.
 ![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/end.png)
 
 ## Referências
-Repositório Github[https://github.com/gtLara/sparc](https://github.com/gtLara/sparc)\
+Repositório Github [https://github.com/gtLara/sparc](https://github.com/gtLara/sparc)\
 The SPARC Architecture Manual, Version 8, [https://sparc.org/](https://sparc.org/)\
 Apresentação de slides do curso CS217 - Programing Systems de Princeton\
 [https://www.cs.princeton.edu/courses/archive/spring02/cs217/lectures/sparc.pdf](https://www.cs.princeton.edu/courses/archive/spring02/cs217/lectures/sparc.pdf)\
