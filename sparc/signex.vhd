@@ -3,6 +3,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use ieee.NUMERIC_STD.all;
 
+-- extensor de sinais, extende sinal de tamanho generico para 32 bits
+
 entity signex is
     generic(size: integer := 12); -- na verdade é tamanho - 1
     port(
