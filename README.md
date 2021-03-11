@@ -49,7 +49,7 @@ Para computar tal resultado, basta fazer a operação XOR do bit de paridade
 dado, um após o outro. A seguir estão os códigos implementados em C, assembly e
 linguagem de máquina.
 
-```
+```C
 Código em C
 
 /*
