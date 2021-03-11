@@ -3,6 +3,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use ieee.NUMERIC_STD.all;
 
+-- unidade de deslocamento. nao usada na implementacao final.
+
 entity shifter is
     port(
          src : in std_logic_vector(31 downto 0);
