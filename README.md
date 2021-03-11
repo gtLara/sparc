@@ -256,5 +256,24 @@ Como já mencionado o arquivo "clean_test.do" carrega outros sinais em sua
 representação numérica apropriada que foram considerados importantes para a
 análise brevemente descrita nessa seção.
 
+### Nota sobre encerramento
+
+O encerramento da execução do programa é feito no arquivo "clean_test.do" por
+meio das seguintes linhas:
+
+```
+when {sim:/tb_sparc/uut/u_program_counter/next_instruction_address == "01010"} {
+  stop
+  echo "Programa chegou ao fim"
+}
+```
+
+Que simplesmente encerram o programa se o endereço da próxima instrução for
+igual a 10, isso é, se a condição pra o branch falhar, evento correspondente
+à saída do laço for. A imagem a seguir ilustra a saída no console indicando
+a parada.
+
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/end.png)
+
 ## Referências
 The SPARC Architecture Manual, Version 8, disponível em [https://sparc.org/](https://sparc.org/).
