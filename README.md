@@ -441,7 +441,7 @@ a parada.
 ![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/end.png)
 
 ## Referências
-The SPARC Architecture Manual, Version 8, disponível em [https://sparc.org/](https://sparc.org/).
+The SPARC Architecture Manual, Version 8, disponível em [https://sparc.org/](https://sparc.org/)\
 Apresentação de slides do curso CS217 - Programing Systems de Princeton
 - [https://www.cs.princeton.edu/courses/archive/spring02/cs217/lectures/sparc.pdf](https://www.cs.princeton.edu/courses/archive/spring02/cs217/lectures/sparc.pdf)
 - [https://www.cs.princeton.edu/courses/archive/spring03/cs217/lectures/Branching.pdf](https://www.cs.princeton.edu/courses/archive/spring03/cs217/lectures/Branching.pdf) 
