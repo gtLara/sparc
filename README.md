@@ -122,7 +122,7 @@ for:    and %l1, 1, %l2     ! pega o LSB do dados atual e poe em %l2
 !FIM, o resultado com crc fica em %l0
 ```
 ```
-Código de Máquina:
+Linguagem de Máquina:
 11100000000000000010000000000001
 11100010000000000010000000000000
 10101110000000000010000000000000
