@@ -186,11 +186,43 @@ funciona armazenando um sinal que indica se a última operação realizada foi
 negativa no registrador "psr".
 
 ##### Banco de registradores
+Declaração em VHDL:
+```VHDL
+entity register_file is -- registrador de 32 palavras
 
-(leitura assíncrona e escrita síncrona com enable, etc. "pinagem")
+    port(
+         ra_1, ra_2, wa_3 : in std_logic_vector(4 downto 0); -- entradas com endereço
+         clk : in std_logic;
+         we : in std_logic; -- write enable
+         wa_3_data : in std_logic_vector(31 downto 0); -- entrada de dados de escrita
+         ra_1_data, ra_2_data : out std_logic_vector(31 downto 0) -- saída de dados de leitura
+        );
+
+end register_file;
+```
+Mesmo modelo utilizado no livro-texto da disciplina, com leitura assíncrona e escrita síncrona.
 
 ##### Unidade de Controle
-
+Declaração em VHDL:
+```VHDL
+entity control is
+    port(
+         opcode : in std_logic_vector(5 downto 0);
+         format : in std_logic_vector(1 downto 0);
+-- sinal que determina se ocorre escrita em memoria de dados
+         data_we : out std_logic;
+-- sinal que determina se pode ocorrer um branch (depende adicionalmente da saida negativa da alu. vide documentacao)
+         branch : out std_logic;
+-- sinal que determina se ocorre escrita nos registradores
+         register_we : out std_logic;
+-- sinal que determina a fonte do dado a ser escrito nos registradores (entre saida da memoria de dados ou da alu)
+         regwrite_source : out std_logic;
+-- sinal que determina se ocorre escrita no psr
+         psr_we : out std_logic;
+-- sinal que determina a operacao da alu
+         alu_control : out std_logic_vector(3 downto 0));
+end entity;
+```
 A unidade de controle é responsável por controlar permissões de escrita e
 os vários mutliplexadores distribuídos no datapath para a execução das
 instruções. A unidade recebe como entrada os sinais "opcode" e "format".
@@ -211,20 +243,89 @@ O destino e a função de cada um dos sinais de saída é detalhado de forma
 visual na ilustração do datapath desenvolvido.
 
 ##### Memórias
+- De dados
+Declaração em VHDL:
+```VHDL
+entity data_memory is -- memoria de dados de 32 palavras
 
-(endereçamento, etc)
+    port(
+         data_address: in std_logic_vector(4 downto 0); -- data address
+         clk : in std_logic;
+         we : in std_logic; -- write enable
+         write_data : in std_logic_vector(31 downto 0);
+         data : out std_logic_vector(31 downto 0)
+        );
+
+end data_memory;
+``` 
+A memória de dados possui entrada e saída de dados, com entrada de endereço e de habilitação de esccrita.
+- De instrução
+Declaração em VHDL:
+```VHDL
+entity instruction_memory is
+
+    port(
+            set : in std_logic; -- sinal para carregamento de progrma
+            address : in std_logic_vector(4 downto 0);
+            instruction : out std_logic_vector(31 downto 0));
+
+end instruction_memory;
+```
+Como nunca há escrita na memória de instrução, ela possui apenas entrada de endereço e saída assíncrona. O sinal set é usado somente para iniciar a memória por meio de um testbench.
+
+
 
 ##### Extensor de sinal
-
-(só os pinos)
-
+Declaração em VHDL:
+```VHDL
+entity signex is
+    generic(size: integer := 12); -- na verdade é tamanho - 1
+    port(
+         signex_in: in std_logic_vector(size downto 0);
+         signex_out: out std_logic_vector(31 downto 0));
+end signex;
+```
+Extende em sinal o imediato de 13 bits.
 ##### Somador
-
-(com ou sem sinal, qtos bits)
+Declaração em VHDL:
+```VHDL
+entity adder is
+    port(
+         src_a : in std_logic_vector(4 downto 0);
+         src_b : in std_logic_vector(4 downto 0);
+         sum : out std_logic_vector(4 downto 0));
+end adder;
+```
+Somador com sinal, para o endereço de PC. Note que PC foi reduzido e usa somente 5 bits.
 ##### PC
-(qtos bits, se tem enable)
+Descrição em VHDL:
+```VHDL
+entity program_counter is -- registrador que armazena endereços de instruções
+
+    port(
+         next_instruction_address : in std_logic_vector(4 downto 0);
+         clk : in std_logic;
+         current_instruction_address : out std_logic_vector(4 downto 0)
+        );
+
+end program_counter;
+```
+Registrador de 5 bits com entrada paralela.
 ##### PSR
-(qtos bits, se tem enable)
+Declaração em VHDL:
+```VHDL
+entity ps_register is -- registrador que armazena se ultima operacao da alu foi negativa
+
+    port(
+         psr_we : in std_logic; -- write enable
+         next_input : in std_logic;
+         clk : in std_logic;
+         last_input : out std_logic
+        );
+
+end ps_register;
+```
+Só é usado 1 bit desse registrador, então ele foi reduzido.
 
 ### Notas sobre e execução
 
