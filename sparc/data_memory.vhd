@@ -22,7 +22,7 @@ architecture data_arc of data_memory is
 
     type ram_4x32 is array (0 to 3) of std_logic_vector(31 downto 0);
 
-    signal mem: ram_4x32 := ("00000000000000000000000000000100",
+    signal mem: ram_4x32 := ("00000000000000000000000000000100", -- instancia memoria em tempo de compilacao
                              "00000000000000000000000000000001",
                              "00000000000000000000000000000000",
                              "00000000000000000000000000000000");
@@ -31,7 +31,7 @@ architecture data_arc of data_memory is
 
         -- processo de escrita
 
-        write: process(clk) -- o processo eh sensivel apenas ao clock
+        write: process(clk) -- o processo é sensivel apenas ao clock
         begin
 
         if rising_edge(clk) then  -- opera apenas nas subidas de clock
@@ -48,9 +48,9 @@ architecture data_arc of data_memory is
 
         begin
 
-            if to_integer(data_address) < 4 then
-                data <= mem(to_integer(data_address));
-            end if;
+            if to_integer(data_address) < 4 then -- verifica se endereco recebido existe
+                data <= mem(to_integer(data_address)); -- se sim, recupera dado correspondente
+            end if;  -- se nao, nada é feito. a saída anterior é mantida
 
         end process read;
 
