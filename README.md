@@ -186,7 +186,7 @@ do programa em memória.
 Ao executar "do clean_test.do" observa-se a seguinte figura na janela
 de visualização de onda:
 
-![painel_onda](https://github.com/gtLara/sparc/blob/master/images/wave_panel.jpg)
+![painel_onda](https://github.com/gtLara/sparc/blob/master/images/wave_panel.png)
 
 Os sinais ao lado esquerdo da imagem foram escolhidos como os mais relevantes
 para análise do processamento do programa armazenado, mas é possível visualizar
@@ -210,14 +210,14 @@ deixa de se incrementar consecutivamente e passa de 8 para 3, retornando a
 execução ao início do laço. A instrução em si de fato se altera para a
 instrução presente no endereço 3 da memória de instrução.
 
-![sobreposicao_regs](https://github.com/gtLara/sparc/blob/master/images/c_out.jpg)
+![sobreposicao_regs](https://github.com/gtLara/sparc/blob/master/images/c_out.png)
 
 Nesse ponto é interessante observar a saída da versão em C do programa que o
 processador executa. Recorre-se como referência ao código "paridade.c".
 Imprimindo os valores das variáveis "crc" e "dado" a cada iteração do loop do
 CRC obtém-se a seguinte saída:
 
-![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/brach_example.jpg)
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/brach_example.png)
 
 Uma vez que esse é exatamente o programa escrito em linguagem de máquina na
 memória de instruções assume-se como condição suficiente para conclusão que o
@@ -228,7 +228,7 @@ Para tal observação é necessário se atentar ao sinal que representa a memór
 dos registradores, "u_register_file/mem". A imagem abaixo mostra um estado
 intermediário desse sinal, onde se espera encontrar "crc = 1" e "dado = 2".
 
-![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/register.jpg)
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/register.png)
 
 Sabendo que os registradores em que os dados mencionados são armazenados são
 (em decimal) 16 e 17, respectivamente, nota-se que nossa expectativa é
@@ -238,7 +238,7 @@ A verificação de que os valores seguintes desses registradores se comportam
 como esperado pode ser feito da mesma maneira. A imagem a seguir ilustra
 o estado final da memória de registradores.
 
-![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/final_register.jpg)
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/final_register.png)
 
 Para finalizar a análise dos registradores nota-se que o registrador 23,
 responsável por armazenar a variável "i", armazena 8 como esperado.
@@ -248,7 +248,7 @@ a entrada e saídas da porta and que determina um branch, "u_branch_and/".
 A saída dessa porta, "u_branch_and/and_out", sinaliza se o branch foi
 tomado de fato. A imagem abaixo ilustra o momento em que um branch ocorre.
 
-![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/branch_example_abd.jpg)
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/branch_example_abd.png)
 
 Como já mencionado o arquivo "clean_test.do" carrega outros sinais em sua
 representação numérica apropriada que foram considerados importantes para a
