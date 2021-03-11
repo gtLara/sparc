@@ -192,15 +192,12 @@ Os sinais ao lado esquerdo da imagem foram escolhidos como os mais relevantes
 para análise do processamento do programa armazenado, mas é possível visualizar
 todos os sinais executando "do test.do".
 
-Alguns sinais são de particular interesse para acompanhamento do processamento.
-Chama-se atenção aos seguintes sinais: 
-
-* "u_instruction_memory/instruction" representa a instrução executada no ciclo
-  correspondente.
-* "u_program_counter/current_instruction_address" e
-  "u_program_counter/current_instruction_address" representam o endereço da
-  instrução executada no ciclo imediato e o endereço da próxima instrução a
-  ser executada.
+O primeiro grupo de sinais a ser comentado são
+"u_instruction_memory/instruction",
+"u_program_counter/current_instruction_address" e
+"u_program_counter/next_instruction_address, que representam a instrução
+associada ao ciclo atual, o endereço de tal instrução e o endereço da próxima
+instrução, respectivamente.
 
 Com esse trio de sinais já é possível monitorar o funcionamento adequado do
 mecanismo de desvio condicional desenvolvido para implementar o laço "for" do
@@ -210,14 +207,21 @@ deixa de se incrementar consecutivamente e passa de 8 para 3, retornando a
 execução ao início do laço. A instrução em si de fato se altera para a
 instrução presente no endereço 3 da memória de instrução.
 
-![sobreposicao_regs](https://github.com/gtLara/sparc/blob/master/images/c_out.png)
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/branch_example.png)
+
+Outros conjunto de sinais importante para o acompanhamento dos branches são
+a entrada e saídas da porta and que determina um branch, "u_branch_and/".
+A saída dessa porta, "u_branch_and/and_out", sinaliza se o branch foi
+tomado de fato. A imagem abaixo ilustra o momento em que um branch ocorre.
+
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/branch_example_abd.png)
 
 Nesse ponto é interessante observar a saída da versão em C do programa que o
 processador executa. Recorre-se como referência ao código "paridade.c".
 Imprimindo os valores das variáveis "crc" e "dado" a cada iteração do loop do
 CRC obtém-se a seguinte saída:
 
-![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/brach_example.png)
+![sobreposicao_regs](https://github.com/gtLara/sparc/blob/master/images/c_out.png)
 
 Uma vez que esse é exatamente o programa escrito em linguagem de máquina na
 memória de instruções assume-se como condição suficiente para conclusão que o
@@ -243,12 +247,10 @@ o estado final da memória de registradores.
 Para finalizar a análise dos registradores nota-se que o registrador 23,
 responsável por armazenar a variável "i", armazena 8 como esperado.
 
-Outros conjunto de sinais importante para o acompanhamento da execução são
-a entrada e saídas da porta and que determina um branch, "u_branch_and/".
-A saída dessa porta, "u_branch_and/and_out", sinaliza se o branch foi
-tomado de fato. A imagem abaixo ilustra o momento em que um branch ocorre.
+Por fim chama-se atenção aos sinais de controle, ilustrados em um dado
+momento da execução na imagem a seguir.
 
-![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/branch_example_abd.png)
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/control.png)
 
 Como já mencionado o arquivo "clean_test.do" carrega outros sinais em sua
 representação numérica apropriada que foram considerados importantes para a
