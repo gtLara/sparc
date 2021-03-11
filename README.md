@@ -1,8 +1,8 @@
 # Documentação
 
-## Introdução: arquitetura SPARC e o trabalho desenvolvido A
+## Introdução: arquitetura SPARC e o trabalho desenvolvido
 
-arquitetura SPARC(Scalable Processor ARChitecture) é uma arquitetura aberta
+A arquitetura SPARC(Scalable Processor ARChitecture) é uma arquitetura aberta
 RISC criada em 1987 pela SUN Microsystems. Ela  se tornou muito popular e até
 hoje é amplamente utilizada. Neste trabalho usaremos a versão 8 da SPARC, de 32
 bits como inspiração para fazer um processador ciclo único que execute um
@@ -59,14 +59,14 @@ Código em C
 
 boolean crc(){
   int crc = 1;//se tudo for zero, o crc não se altera e a paridade é par
-  int dados = 0xfb;//somente 8 bits são usados
+  int dados = 0x04;//somente 8 bits são usados
   for(int i = 0; i < 8; i++){
     //faz XOR do CRC com o bit i dos dados (começando do bit zero)
     /*
      * exemplo
-     * dados = 0xfb;
-     * dados >> 2 = 0x3e;
-     * ( (dados >> 2) & 0x1 ) = 0;
+     * dados = 0x04;
+     * dados >> 2 = 0x01;
+     * ( (dados >> 2) & 0x1 ) = 1;
      *
      */
     crc ^= (dados & 0x1);
@@ -89,14 +89,15 @@ Código em Assembly do SPARC
 ! xor
 ! and
 
-! dilaceramos o banco de registradores, só usamos 32 + 1:
+! banco de registradores reduzido: 32 de uso geral + 2 de estado:
 ! %g0 ~ %g7 = %r0  ~ %r7   - registradores globais
 ! %o0 ~ %07 = %r8  ~ %r15  - registradores Out
 ! %l0 ~ %l7 = %r16 ~ %r23 - registradores locais
 ! %i0 ~ %i7 = %r24 ~ %r31 - registradores in
 ! %g0 = %r0 = constante 0
+! de estado:
 ! %psr - registrador de estado, usa ele no bl
-! tem o PC tbm, mas ele sempre existe
+! PC - Program Counter 
 
 !seções devem ser iniciadas assim:
 .section ".data"
@@ -147,7 +148,20 @@ O processador foi implementado em linguagem VHDL e verificado utilizando o Model
 Em seguida uma breve descrição de cada componente. (uma frase pra cada um, nada longo demais)
 
 ##### ALU
+Declaração em VHDL:
+```
+entity alu is
+    port(
+        src_a : in std_logic_vector(31 downto 0); -- entrada a
+        src_b: in std_logic_vector(31 downto 0); -- entraba b
+        shift_amount: in std_logic_vector(4 downto 0); -- quantidade de deslocamento: pode deslocar 32 bits
+        alu_control : in std_logic_vector(3 downto 0); -- controle de operação
+        alu_result : out std_logic_vector(31 downto 0); -- resultado de operação
+        negative: out std_logic; -- sinaliza se resultado foi negativo
+        zero : out std_logic); -- bandeira que indica se resultado foi zero
 
+end alu;
+```
 A ALU implementada realiza as operações listadas na tabela a seguir. Ao
 lado esquerdo do nome da operação está seu identificador binário.
 
