@@ -99,7 +99,28 @@ Em seguida uma breve descrição de cada componente. (uma frase pra cada um, nad
 
 ##### ALU
 
-(listar os operações que a ALU faz e foto com a "pinagem")
+A ALU implementada realiza as operações listadas na tabela a seguir. Ao
+lado esquerdo do nome da operação está seu identificador binário.
+
+| op_id  | operacao            |
+|--------|---------------------|
+| 0000   | soma                |
+| 0001   | subtração           |
+| 0010   | and                 |
+| 0011   | or                  |
+| 0100   | xor                 |
+| 0111   | shift right logical |
+
+Observa-se que duas outras operações foram implementadas mas não usadas no
+processador (portanto omitidas).
+
+A ALU calcula a operação desejada entre dois sinais de 32 bits, retornando o
+resultando em um sinal de igual profundidade.
+
+Além de ter como saída o resultado da operação a ALU sinaliza se o resultado
+foi negativo. Isso é importante para a instrução de desvio condicional, que
+funciona armazenando um sinal que indica se a última operação realizada foi
+negativa no registrador "psr".
 
 ##### Banco de registradores
 
@@ -123,6 +144,9 @@ A tabela de verdade para a unidade de controle é apresentada a seguir:
 | subcc     | 010100 | 10     | 0       | 1           | 0      | 0               | 1      | 0001        |
 | bl        | xxxxxx | 00     | x       | x           | 1      | x               | 0      | xxxx        |
 
+O destino e a função de cada um dos sinais de saída é detalhado de forma
+visual na ilustração do datapath desenvolvido.
+
 ##### Memórias
 
 (endereçamento, etc)
@@ -139,9 +163,96 @@ A tabela de verdade para a unidade de controle é apresentada a seguir:
 ##### PSR
 (qtos bits, se tem enable)
 
-## Notas sobre execução
+### Notas sobre e execução
+
+O trabalho foi desenvolvido inteiramente com o ModelSim gratuito distribuído
+para linux. Optou-se por desenvolver e verificar, por meio de códigos de
+testbench, cada componente usado no processador antes de iniciar a
+integração. Cada componente e seus respectivos testbenches estão armazenados
+em "tinker/components". A verificação dos componentes e do processo de
+integração do processador, assim como a execução do programa armazenado em
+memória, foram feitas no simulador oferecido pelo ModelSim.
+
+A execução do programa em memória deve portanto ser feita abrindo o ModelSim,
+abrindo o testbench compilado "sparc/work/tb_sparc", e executando o arquivo
+.do projetado para essa execução, clean_test.do, por meio do comando
+"do clean_test.do" no console do ModelSim.
+
+A seguinte seção exemplifica um processo simples de acompanhamento da execução
+do programa em memória.
 
 ## Resultados e simulações
+
+Ao executar "do clean_test.do" observa-se a seguinte figura na janela
+de visualização de onda:
+
+![painel_onda](https://github.com/gtLara/sparc/blob/master/images/wave_panel.jpg)
+
+Os sinais ao lado esquerdo da imagem foram escolhidos como os mais relevantes
+para análise do processamento do programa armazenado, mas é possível visualizar
+todos os sinais executando "do test.do".
+
+Alguns sinais são de particular interesse para acompanhamento do processamento.
+Chama-se atenção aos seguintes sinais: 
+
+* "u_instruction_memory/instruction" representa a instrução executada no ciclo
+  correspondente.
+* "u_program_counter/current_instruction_address" e
+  "u_program_counter/current_instruction_address" representam o endereço da
+  instrução executada no ciclo imediato e o endereço da próxima instrução a
+  ser executada.
+
+Com esse trio de sinais já é possível monitorar o funcionamento adequado do
+mecanismo de desvio condicional desenvolvido para implementar o laço "for" do
+programa em alto nível. A linha amarela vertical na imagem abaixo indica uma
+subida de clock em que um salto acontece. Observe que "next_instruction_address"
+deixa de se incrementar consecutivamente e passa de 8 para 3, retornando a
+execução ao início do laço. A instrução em si de fato se altera para a
+instrução presente no endereço 3 da memória de instrução.
+
+![sobreposicao_regs](https://github.com/gtLara/sparc/blob/master/images/c_out.jpg)
+
+Nesse ponto é interessante observar a saída da versão em C do programa que o
+processador executa. Recorre-se como referência ao código "paridade.c".
+Imprimindo os valores das variáveis "crc" e "dado" a cada iteração do loop do
+CRC obtém-se a seguinte saída:
+
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/brach_example.jpg)
+
+Uma vez que esse é exatamente o programa escrito em linguagem de máquina na
+memória de instruções assume-se como condição suficiente para conclusão que o
+processador foi implementado com sucesso a observação dos mesmos valores nas
+variáveis relevantes durante a simulação de execução do program armazenado.
+
+Para tal observação é necessário se atentar ao sinal que representa a memória
+dos registradores, "u_register_file/mem". A imagem abaixo mostra um estado
+intermediário desse sinal, onde se espera encontrar "crc = 1" e "dado = 2".
+
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/register.jpg)
+
+Sabendo que os registradores em que os dados mencionados são armazenados são
+(em decimal) 16 e 17, respectivamente, nota-se que nossa expectativa é
+atendida.
+
+A verificação de que os valores seguintes desses registradores se comportam
+como esperado pode ser feito da mesma maneira. A imagem a seguir ilustra
+o estado final da memória de registradores.
+
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/final_register.jpg)
+
+Para finalizar a análise dos registradores nota-se que o registrador 23,
+responsável por armazenar a variável "i", armazena 8 como esperado.
+
+Outros conjunto de sinais importante para o acompanhamento da execução são
+a entrada e saídas da porta and que determina um branch, "u_branch_and/".
+A saída dessa porta, "u_branch_and/and_out", sinaliza se o branch foi
+tomado de fato. A imagem abaixo ilustra o momento em que um branch ocorre.
+
+![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/branch_example_abd.jpg)
+
+Como já mencionado o arquivo "clean_test.do" carrega outros sinais em sua
+representação numérica apropriada que foram considerados importantes para a
+análise brevemente descrita nessa seção.
 
 ## Referências
 The SPARC Architecture Manual, Version 8, disponível em [https://sparc.org/](https://sparc.org/).
