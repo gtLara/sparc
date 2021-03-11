@@ -31,7 +31,7 @@ architecture register_arc of register_file is
     begin
 
         -- processo de escrita
-        write: process(clk) -- o processo eh sensivel apenas ao clock
+        write: process(clk) -- o processo é sensivel apenas ao clock
         begin
 
         if rising_edge(clk) then  -- opera apenas nas subidas de clock
@@ -48,7 +48,7 @@ architecture register_arc of register_file is
 
         -- processo de leitura
 
-        read: process(ra_1, ra_2, wa_3, clk,                -- sensivel a todos os sinais
+        read: process(ra_1, ra_2, wa_3, clk,    -- sensivel a todos os sinais
                       we, wa_3_data)
         begin
             if( to_integer(ra_1) = 0 ) then
