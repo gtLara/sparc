@@ -10,7 +10,7 @@ use STD.TEXTIO.ALL;
 entity instruction_memory is
 
     port(
-            set : in std_logic;
+            set : in std_logic; -- sinal para carregamento de progrma
             address : in std_logic_vector(4 downto 0);
             instruction : out std_logic_vector(31 downto 0));
 
@@ -21,19 +21,20 @@ architecture instruction_memory_arc of instruction_memory is
     type ram_32x32 is array (0 to 31) of std_logic_vector(31 downto 0); -- 32 palavras  de 32 bits cada
     signal mem: ram_32x32;
 
-    file program : text open read_mode is "program.txt";
+    file program : text open read_mode is "program.txt"; -- cria arquivo
 
-    constant period: time := 200 ns;
 
     begin
 
-    load: process(set)
+    load: process(set) -- processo de carregamento de programa armazenado
 
         variable counter : integer := 0;
         variable current_read_line : line;
         variable current_read_instruction : std_logic_vector(31 downto 0);
 
         begin
+
+        -- carrega linha e salva instrucao em endereco correspondente ao numero da linha
 
             while(not endfile(program)) loop
                 readline(program, current_read_line);
@@ -44,7 +45,7 @@ architecture instruction_memory_arc of instruction_memory is
 
     end process load;
 
-    read: process(address)
+    read: process(address) -- processo de leitura de instrucao
     begin
 
         instruction <= mem(to_integer(unsigned(address)));
