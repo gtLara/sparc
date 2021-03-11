@@ -146,7 +146,7 @@ Observa-se que duas outras operações foram implementadas mas não usadas no
 processador (portanto omitidas).
 
 A ALU calcula a operação desejada entre dois sinais de 32 bits, retornando o
-resultando em um sinal de igual profundidade.
+resultante em um sinal de igual profundidade.
 
 Além de ter como saída o resultado da operação a ALU sinaliza se o resultado
 foi negativo. Isso é importante para a instrução de desvio condicional, que
@@ -232,11 +232,11 @@ instrução, respectivamente.
 
 Com esse trio de sinais já é possível monitorar o funcionamento adequado do
 mecanismo de desvio condicional desenvolvido para implementar o laço "for" do
-programa em alto nível. A linha amarela vertical na imagem abaixo indica uma
-subida de clock em que um salto acontece. Observe que "next_instruction_address"
-deixa de se incrementar consecutivamente e passa de 8 para 3, retornando a
-execução ao início do laço. A instrução em si de fato se altera para a
-instrução presente no endereço 3 da memória de instrução.
+programa em alto nível. A linha amarela vertical na imagem abaixo indica um
+evento em que o endereço de um salto é calculado e selecionado. Observe que
+"next_instruction_address" deixa de se incrementar consecutivamente e passa de
+8 para 3, retornando a execução ao início do laço. A instrução em si de fato se
+altera para a instrução presente no endereço 3 da memória de instrução.
 
 ![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/branch_example.png)
 
@@ -299,7 +299,7 @@ when {sim:/tb_sparc/uut/u_program_counter/next_instruction_address == "01010"} {
 }
 ```
 
-Que simplesmente encerram o programa se o endereço da próxima instrução for
+Que simplesmente encerra o programa se o endereço da próxima instrução for
 igual a 10, isso é, se a condição pra o branch falhar, evento correspondente
 à saída do laço for. A imagem a seguir ilustra a saída no console indicando
 a parada.
