@@ -25,9 +25,6 @@ begin
 
     alu_process: process(alu_control, src_a, src_b, shift_amount)
         begin
-            -- TODO: testbench shift; get shamt right, see if the value updates or is defined
-            -- just by initial value. i think its better to just throw the convertion into the
-            -- shift expression.
             case (alu_control) is
 
                 when "0000" => result <= src_a + src_b; -- soma
@@ -65,6 +62,6 @@ begin
         zero <= '1' when result = all_zeros else
                 '0';
 
-        negative <= result(31);
+        negative <= result(31); -- hi se resultado de operacao for negativo
 
 end alu_arc;
