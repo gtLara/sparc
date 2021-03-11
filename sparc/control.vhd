@@ -7,11 +7,17 @@ entity control is
     port(
          opcode : in std_logic_vector(5 downto 0);
          format : in std_logic_vector(1 downto 0);
+-- sinal que determina se ocorre escrita em memoria de dados
          data_we : out std_logic;
+-- sinal que determina se pode ocorrer um branch (depende adicionalmente da saida negativa da alu. vide documentacao)
          branch : out std_logic;
+-- subal que determina se ocorre escrita nos registradores
          register_we : out std_logic;
+-- subal que determina a fonte do dado a ser escrito nos registradores (entre saida da memoria de dados ou da alu)
          regwrite_source : out std_logic;
+-- subal que determina se ocorre escrita no psr
          psr_we : out std_logic;
+-- subal que determina a operacao da alu
          alu_control : out std_logic_vector(3 downto 0));
 end entity;
 
@@ -66,7 +72,7 @@ begin
 
                     end case;
 
-                when "00" =>
+                when "00" => -- bl
                     alu_control <= "0000";
                     psr_we <= '0';
                     branch <= '1';
@@ -76,6 +82,8 @@ begin
                 end case;
 
             end process control;
+
+            -- esses sinais sao iguais para todas instrucoes implementadas
 
             data_we <= '0';
             register_we <= '1';
