@@ -1,9 +1,3 @@
--- TODO: implementar datapath expandido, expandir controle
---
---  resta implementar datapath para a instrucao de branch e expandir controle
---  para a mesma finalidade. o ultimo desses itens deve se resumir a adicao
---  de um mux
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
@@ -133,7 +127,10 @@ architecture sparc_arc of sparc is
     --------------------------------------------------------------------------
 
 
-    -- Parsing de instrucoes: dessa forma esta errado. é necessário fazer isso direto nas entradas dos ports
+    -- Parsing de instrucoes: declaracao de sinais decorresntes de instrucoes
+    -- inicializacao desses sinais é feita para referência, uma vez que a
+    -- atribuição de seus valores é realizado nas entradas dos ports na
+    -- seção de instanciacao dos componentes
     --------------------------------------------------------------------------
 
     signal instruction : std_logic_vector(31 downto 0);
@@ -212,8 +209,8 @@ architecture sparc_arc of sparc is
 
     begin
 
-    -- pensar em como implementar PC; iteracao +4 requer alteracao de
-    -- enderecamento em banco de registros, que no momento esta por inteiro
+    -- Nota-se que o endereçamento é feito por inteiro para simplificar o
+    -- processador
 
     --------------------------------------------------------------------------
     -- Instanciacao de componentes -------------------------------------------
@@ -308,7 +305,7 @@ architecture sparc_arc of sparc is
                         src_b => alu_mux_out,
                         shift_amount => instruction(4 downto 0),
                         alu_control => alu_control,
-                        alu_result => alu_result, -- saida de alu é mapeada para endereço de escrita de registrador ou dados. ver como generalizar nome desse sinal
+                        alu_result => alu_result,
                         negative => negative,
                         zero => zero
                      );
@@ -321,7 +318,7 @@ architecture sparc_arc of sparc is
                                      and_out => actual_branch
                                      );
 
-    -- instancia de memoria de dados
+    -- instancia de psr
 
     u_ps_register: ps_register port map(
                                          psr_we => psr_we, -- tratado por controle
@@ -330,8 +327,10 @@ architecture sparc_arc of sparc is
                                          last_input => last_negative
                                         );
 
+    -- instancia de memoria de dados
+
     u_data_mem: data_memory port map(
-                                     data_address => alu_result(4 downto 0), -- saida de alu; enderacamento eh feito em 5 bits
+                                     data_address => alu_result(4 downto 0), -- saida de alu; enderacamento é feito em 5 bits
                                      clk => clk,
                                      we => data_we,
                                      write_data => ra_1_data,
@@ -345,6 +344,8 @@ architecture sparc_arc of sparc is
                                  b => data, -- mux_in_1
                                  sel => regwrite_source, -- mux_sel
                                  e  => wa_3_data); -- mux_out
+
+    -- atribuicao de endereco de instrucao
 
     instruction_address <= pc_mux_out(4 downto 0);
 
