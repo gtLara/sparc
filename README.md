@@ -243,7 +243,7 @@ O destino e a função de cada um dos sinais de saída é detalhado de forma
 visual na ilustração do datapath desenvolvido.
 
 ##### Memórias
-- De dados
+- De dados\
 Declaração em VHDL:
 ```VHDL
 entity data_memory is -- memoria de dados de 32 palavras
@@ -259,7 +259,7 @@ entity data_memory is -- memoria de dados de 32 palavras
 end data_memory;
 ``` 
 A memória de dados possui entrada e saída de dados, com entrada de endereço e de habilitação de esccrita.
-- De instrução
+- De instrução\
 Declaração em VHDL:
 ```VHDL
 entity instruction_memory is
