@@ -149,7 +149,7 @@ Em seguida uma breve descrição de cada componente. (uma frase pra cada um, nad
 
 ##### ALU
 Declaração em VHDL:
-```
+```VHDL
 entity alu is
     port(
         src_a : in std_logic_vector(31 downto 0); -- entrada a
