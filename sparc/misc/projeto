@@ -1,0 +1,8 @@
+reducao de registradores - nao ha mais registradores ciclicos
+reducao de bandeiras para psr
+simplificacao do program counter
+datapath so das instrucoes usadas no crc
+nao tem trap
+nao tem excecao e sistemas de controle
+branch foi bem simplificado
+ciclo unico
