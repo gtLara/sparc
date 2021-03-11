@@ -1,4 +1,7 @@
-# Documentação ## Introdução: arquitetura SPARC e o trabalho desenvolvido A
+# Documentação
+
+## Introdução: arquitetura SPARC e o trabalho desenvolvido A
+
 arquitetura SPARC(Scalable Processor ARChitecture) é uma arquitetura aberta
 RISC criada em 1987 pela SUN Microsystems. Ela  se tornou muito popular e até
 hoje é amplamente utilizada. Neste trabalho usaremos a versão 8 da SPARC, de 32
@@ -12,27 +15,38 @@ nas figuras `X` e `Y`, o número de unidades no hardware é menor. Mais
 informações sobre as imagens no documento referenciado.\
 ![sobreposicao_regs](https://github.com/gtLara/sparc/blob/master/images/sobreposi%C3%A7%C3%A3o_regs.jpg)
 ![roda_das_janelas](https://github.com/gtLara/sparc/blob/master/images/Roda_das_janelas.jpg)
+
 ##### Dois registradores Program Counter A arquitetura SPARC prevê dois Program
+
 Counters: nPC e PC. PC guarda o endereço da instrução a ser executada no ciclo,
-enquanto nPC guarda o endereço da instrução seguinte.  ##### Branch com
-comparação anterior e instrução atrasada As intruções de Branch na arquitetura
-envolvem outras duas instruções. A primeira é uma pseudoinstrução de
-comparação, `cmp`, que subtrai dois operandos e armazena 4 valores referentes a
-essa operação, como  existência overflow ou resultado negativo, em um
-registrador específico, o registrador de estados do processador.  Esses quatro
-valores serão utilizados como condição para o desvio pela própria instrução de
-branch (`bl` por exemplo). A segunda é uma instrução que fica logo depois da
-instrução de branch e pode ou não ser executada. Isso é possível porque o
-branch altera nPC, e não PC.  ##### Demais características Diversas
-características da arquitetura SPARC não foram citadas por não serem relevantes
-em nossa aplicação. Entre elas: Coprocessador, Unidade de Ponto Flutuante,
-Registradores de Estado, Traps, etc.  ## Algoritmo utilizado O algoritmo de
-teste de paridade é bastante simples.  Ele retorna o resultado '1' caso o
-número de bits '1' no dado de 8 bits seja par e '0' caso seja ímpar.  Para
-computar tal resultado, basta fazer a operação XOR do bit de paridade
+enquanto nPC guarda o endereço da instrução seguinte.
+
+
+##### Branch com comparação anterior e instrução atrasada
+
+As intruções de Branch na arquitetura envolvem outras duas instruções. A
+primeira é uma pseudoinstrução de comparação, `cmp`, que subtrai dois operandos
+e armazena 4 valores referentes a essa operação, como  existência overflow ou
+resultado negativo, em um registrador específico, o registrador de estados do
+processador.  Esses quatro valores serão utilizados como condição para o desvio
+pela própria instrução de branch (`bl` por exemplo). A segunda é uma instrução
+que fica logo depois da instrução de branch e pode ou não ser executada. Isso é
+possível porque o branch altera nPC, e não PC.
+
+##### Demais características
+
+Diversas características da arquitetura SPARC não foram citadas por não serem
+relevantes em nossa aplicação. Entre elas: Coprocessador, Unidade de Ponto
+Flutuante, Registradores de Estado, Traps, etc.
+
+## Algoritmo utilizado
+
+O algoritmo de teste de paridade é bastante simples.  Ele retorna o resultado '1'
+caso o número de bits '1' no dado de 8 bits seja par e '0' caso seja ímpar.
+Para computar tal resultado, basta fazer a operação XOR do bit de paridade
 (inicialmente em '1', já que foi utilizada a paridade par) com cada bit do
-dado, um após o outro. A seguir estão os códigos implementados em C, assembly
-e linguagem de máquina.
+dado, um após o outro. A seguir estão os códigos implementados em C, assembly e
+linguagem de máquina.
 
 ```
 Código em C
@@ -117,13 +131,16 @@ for:    and %l1, 1, %l2     ! pega o LSB do dados atual e poe em %l2
 00000110100000000000000000000011
 ```
 ## Decisões de projeto
+
 De maneira geral, as decisões de projeto foram tomadas tendo em vista a construção do mínimo de componentes necessário para a execução do algoritmo. As principais decisões estão listadas a seguir:
 1. Como usaremos uma quantidade muito pequena de registradores e não precisaremos de mudar de contexto em momento algum, reduzimos o banco de registradores para 32 registradores, havendo só uma janela. São 8 globais (%g0 ~ %g7) e 24 de uso geral em três blocos de 8 (%o0 ~%o7, %l0 ~ %l7, %i0 ~ %i7).
 2. Nosso processador é ciclo único e, por isso, adaptamos o Program Counter e a instrução de branch. Sem a presença de um pipeline não é preciso aguardar o branch ser calculado e executar outra instrução enquanto isso. O registrador nPC foi retirado, ficando apenas PC, e o branch passou a modificar diretamente PC, diferentemente de antes, que modificava nPC.
 3. Usamos apenas um registrador de estado, o Processor State Register, e dele aproveitamos apenas um bit. O bit aproveitado (N) indica se o resultado da última operação da ALU foi negativo e é usado para decidir se o branch será tomado ou não.
 4. O manual dava liberdade de implementar tanto uma memória única para dados e instruções quanto usar duas memórias separadas. Optamos por separar a memória de dados da memória de instruções.
 5. O conjunto de operações da ALU foi reduzido para atender às nossas necessidades.
+
 ## Implementação do processador
+
 O processador foi implementado em linguagem VHDL e verificado utilizando o ModelSim. A figura `X` mostra o processador desenvolvido com o caminho de dados e a unidade de controle.\
 (imagem)\
 Em seguida uma breve descrição de cada componente. (uma frase pra cada um, nada longo demais)
