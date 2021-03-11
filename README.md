@@ -16,7 +16,7 @@ nas figuras `X` e `Y`, o número de unidades no hardware é menor. Mais
 informações sobre as imagens no documento referenciado.\
 ![sobreposicao_regs](https://github.com/gtLara/sparc/blob/master/images/sobreposi%C3%A7%C3%A3o_regs.jpg)
 ![roda_das_janelas](https://github.com/gtLara/sparc/blob/master/images/Roda_das_janelas.jpg)
-
+Figuras mostrando a organização dos registradores na arquitetura SPARC.
 ##### Dois registradores Program Counter A arquitetura SPARC prevê dois Program
 
 Counters: nPC e PC. PC guarda o endereço da instrução a ser executada no ciclo,
