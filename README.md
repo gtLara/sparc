@@ -182,7 +182,7 @@ A ALU calcula a operação desejada entre dois sinais de 32 bits, retornando o
 resultante em um sinal de igual profundidade.
 
 Além de ter como saída o resultado da operação a ALU sinaliza se o resultado
-foi negativo. Isso é importante para a instrução de desvio condicional, que
+foi negativo utilizando o bit mais significativo do resultado, já que usa-se complemento de 2. Isso é importante para a instrução de desvio condicional, que
 funciona armazenando um sinal que indica se a última operação realizada foi
 negativa no registrador "psr".
 
@@ -241,10 +241,12 @@ A tabela de verdade para a unidade de controle é apresentada a seguir:
 | bl        | xxxxxx | 00     | x       | x           | 1      | x               | 0      | xxxx        |
 
 O destino e a função de cada um dos sinais de saída é detalhado de forma
-visual na ilustração do datapath desenvolvido.
+visual na ilustração do datapath desenvolvido. Ressalta-se que parte das 
+entradas da Unidade de Controle real, como o campo `cond` da instrução branch, 
+não foram representadas pois não as utilizamos no código
 
 ##### Memórias
-- De dados\
+- Memória de dados\
 Declaração em VHDL:
 ```VHDL
 entity data_memory is -- memoria de dados de 32 palavras
@@ -260,7 +262,7 @@ entity data_memory is -- memoria de dados de 32 palavras
 end data_memory;
 ``` 
 A memória de dados possui entrada e saída de dados, com entrada de endereço e de habilitação de esccrita.
-- De instrução\
+- Memória de instrução\
 Declaração em VHDL:
 ```VHDL
 entity instruction_memory is
