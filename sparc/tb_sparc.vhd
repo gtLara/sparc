@@ -1,3 +1,7 @@
+-- Esse testbench é simples; simplesmente instancia o processador e dá
+-- início a sua execução sob um sinal de clock. A execução do programa em
+-- memória é auto contida.
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
@@ -27,7 +31,6 @@ architecture tb of tb_sparc is
     signal reset : std_logic := '0';
     signal set : std_logic := '0';
     signal alu_control : std_logic_vector(3 downto 0) := "0000";
-    -- constant period: time := 1 ms; -- quantidade de tempo arbitrariamente alta
 
     signal instruction_address : std_logic_vector(4 downto 0);
 
@@ -48,6 +51,8 @@ architecture tb of tb_sparc is
         set <= '1'; -- carrega instrucoes de programa
 
         wait until instruction_address = "01001";
+
+        -- Mecanismo de parada independente de modelsim. não utilizado
 
         assert false report "O programa encerrou";
 
