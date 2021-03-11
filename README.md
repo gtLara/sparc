@@ -7,8 +7,7 @@ RISC criada em 1987 pela SUN Microsystems. Ela  se tornou muito popular e até
 hoje é amplamente utilizada. Neste trabalho usaremos a versão 8 da SPARC, de 32
 bits como inspiração para fazer um processador ciclo único que execute um
 algoritmo simples de teste de paridade de bits.
-## Características da
-arquitetura mais relevantes para nossa aplicação:
+## Características da arquitetura mais relevantes para nossa aplicação:
 ##### Banco de registradores
 de tamanho variável São 8 registradores globais + N janelas de 16 registradores
 sobrepostas. Uma implementação pode ter de 40 registradores (duas janelas) até
