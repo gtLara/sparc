@@ -131,6 +131,10 @@ for:    and %l1, 1, %l2     ! pega o LSB do dados atual e poe em %l2
 10000000101001011110000000001000
 00000110100000000000000000000011
 ```
+## Datapath
+
+![datapath](https://github.com/gtLara/sparc/blob/master/images/dp.jpeg)
+
 ## Decisões de projeto
 
 De maneira geral, as decisões de projeto foram tomadas tendo em vista a construção do mínimo de componentes necessário para a execução do algoritmo. As principais decisões estão listadas a seguir:
