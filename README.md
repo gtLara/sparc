@@ -147,7 +147,7 @@ De maneira geral, as decisões de projeto foram tomadas tendo em vista a constru
 
 O processador foi implementado em linguagem VHDL e verificado utilizando o ModelSim. A figura `X` mostra o processador desenvolvido com o caminho de dados e a unidade de controle.\
 (imagem)\
-Em seguida uma breve descrição de cada componente. (uma frase pra cada um, nada longo demais)
+Em seguida uma breve descrição de cada componente. 
 
 ##### ALU
 Declaração em VHDL:
@@ -177,7 +177,7 @@ lado esquerdo do nome da operação está seu identificador binário.
 | 0111   | shift right logical |
 
 Observa-se que duas outras operações foram implementadas mas não usadas no
-processador (portanto omitidas).
+processador, portanto omitidas.
 
 A ALU calcula a operação desejada entre dois sinais de 32 bits, retornando o
 resultante em um sinal de igual profundidade.
@@ -262,7 +262,7 @@ entity data_memory is -- memoria de dados de 32 palavras
 
 end data_memory;
 ``` 
-A memória de dados possui entrada e saída de dados, com entrada de endereço e de habilitação de esccrita.
+A memória de dados possui entrada e saída de dados, com entrada de endereço e de habilitação de escrita.
 - Memória de instrução\
 Declaração em VHDL:
 ```VHDL
