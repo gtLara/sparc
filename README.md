@@ -1,12 +1,13 @@
 # Documentação
 
-## Introdução: arquitetura SPARC e o trabalho desenvolvido A
+## Introdução: arquitetura SPARC e o trabalho desenvolvido
 
-arquitetura SPARC(Scalable Processor ARChitecture) é uma arquitetura aberta
-RISC criada em 1987 pela SUN Microsystems. Ela  se tornou muito popular e até
-hoje é amplamente utilizada. Neste trabalho usaremos a versão 8 da SPARC, de 32
+A arquitetura SPARC(Scalable Processor ARChitecture) é uma arquitetura aberta
+RISC criada em 1987 pela SUN Microsystems. Neste trabalho usaremos a versão 8 da SPARC, de 32
 bits como inspiração para fazer um processador ciclo único que execute um
-algoritmo simples de teste de paridade de bits.
+algoritmo simples de teste de paridade de bits. Todos os códigos escritos, 
+análises e passos para a conclusão do projeto estão em um repoitório no Github
+referenciado ao final deste documento.
 ## Características da arquitetura mais relevantes para nossa aplicação:
 ##### Banco de registradores
 de tamanho variável São 8 registradores globais + N janelas de 16 registradores
@@ -15,8 +16,8 @@ sobrepostas. Uma implementação pode ter de 40 registradores (duas janelas) at�
 nas figuras `X` e `Y`, o número de unidades no hardware é menor. Mais
 informações sobre as imagens no documento referenciado.\
 ![sobreposicao_regs](https://github.com/gtLara/sparc/blob/master/images/sobreposi%C3%A7%C3%A3o_regs.jpg)
-![roda_das_janelas](https://github.com/gtLara/sparc/blob/master/images/Roda_das_janelas.jpg)
-
+![roda_das_janelas](https://github.com/gtLara/sparc/blob/master/images/Roda_das_janelas.jpg)\
+Figuras mostrando a organização dos registradores na arquitetura SPARC.
 ##### Dois registradores Program Counter A arquitetura SPARC prevê dois Program
 
 Counters: nPC e PC. PC guarda o endereço da instrução a ser executada no ciclo,
@@ -49,7 +50,7 @@ Para computar tal resultado, basta fazer a operação XOR do bit de paridade
 dado, um após o outro. A seguir estão os códigos implementados em C, assembly e
 linguagem de máquina.
 
-```
+```C
 Código em C
 
 /*
@@ -59,14 +60,14 @@ Código em C
 
 boolean crc(){
   int crc = 1;//se tudo for zero, o crc não se altera e a paridade é par
-  int dados = 0xfb;//somente 8 bits são usados
+  int dados = 0x04;//somente 8 bits são usados
   for(int i = 0; i < 8; i++){
     //faz XOR do CRC com o bit i dos dados (começando do bit zero)
     /*
      * exemplo
-     * dados = 0xfb;
-     * dados >> 2 = 0x3e;
-     * ( (dados >> 2) & 0x1 ) = 0;
+     * dados = 0x04;
+     * dados >> 2 = 0x01;
+     * ( (dados >> 2) & 0x1 ) = 1;
      *
      */
     crc ^= (dados & 0x1);
@@ -89,14 +90,15 @@ Código em Assembly do SPARC
 ! xor
 ! and
 
-! dilaceramos o banco de registradores, só usamos 32 + 1:
+! banco de registradores reduzido: 32 de uso geral + 2 de estado:
 ! %g0 ~ %g7 = %r0  ~ %r7   - registradores globais
 ! %o0 ~ %07 = %r8  ~ %r15  - registradores Out
 ! %l0 ~ %l7 = %r16 ~ %r23 - registradores locais
 ! %i0 ~ %i7 = %r24 ~ %r31 - registradores in
 ! %g0 = %r0 = constante 0
+! de estado:
 ! %psr - registrador de estado, usa ele no bl
-! tem o PC tbm, mas ele sempre existe
+! PC - Program Counter 
 
 !seções devem ser iniciadas assim:
 .section ".data"
@@ -121,15 +123,16 @@ for:    and %l1, 1, %l2     ! pega o LSB do dados atual e poe em %l2
 !FIM, o resultado com crc fica em %l0
 ```
 ```
-11100000000000000010000000000001
-11100010000000000010000000000000
-10101110000000000010000000000000
-10100100100011000110000000000001
-10100000001111000000000000010010
-10100011001101000110000000000001
-10101110000001011110000000000001
-10000000101001011110000000001000
-00000110100000000000000000000011
+Linguagem de Máquina:
+Instrução 0 (ld) - 11100000000000000010000000000001
+Instrução 1 (ld) - 11100010000000000010000000000000
+Instrução 2 (add) - 10101110000000000010000000000000
+Instrução 3 (and) - 10100100100011000110000000000001
+Instrução 4 (xor) - 10100000001111000000000000010010
+Instrução 5 (srl) - 10100011001101000110000000000001
+Instrução 6 (add) - 10101110000001011110000000000001
+Instrução 7 (cmp) - 10000000101001011110000000001000
+Instrução 8 (bl) - 00000110100000000000000000000011
 ```
 ## Datapath
 
@@ -148,10 +151,23 @@ De maneira geral, as decisões de projeto foram tomadas tendo em vista a constru
 
 O processador foi implementado em linguagem VHDL e verificado utilizando o ModelSim. A figura `X` mostra o processador desenvolvido com o caminho de dados e a unidade de controle.\
 (imagem)\
-Em seguida uma breve descrição de cada componente. (uma frase pra cada um, nada longo demais)
+Em seguida uma breve descrição de cada componente. 
 
 ##### ALU
+Declaração em VHDL:
+```VHDL
+entity alu is
+    port(
+        src_a : in std_logic_vector(31 downto 0); -- entrada a
+        src_b: in std_logic_vector(31 downto 0); -- entraba b
+        shift_amount: in std_logic_vector(4 downto 0); -- quantidade de deslocamento: pode deslocar 32 bits
+        alu_control : in std_logic_vector(3 downto 0); -- controle de operação
+        alu_result : out std_logic_vector(31 downto 0); -- resultado de operação
+        negative: out std_logic; -- sinaliza se resultado foi negativo
+        zero : out std_logic); -- bandeira que indica se resultado foi zero
 
+end alu;
+```
 A ALU implementada realiza as operações listadas na tabela a seguir. Ao
 lado esquerdo do nome da operação está seu identificador binário.
 
@@ -165,22 +181,54 @@ lado esquerdo do nome da operação está seu identificador binário.
 | 0111   | shift right logical |
 
 Observa-se que duas outras operações foram implementadas mas não usadas no
-processador (portanto omitidas).
+processador, portanto omitidas.
 
 A ALU calcula a operação desejada entre dois sinais de 32 bits, retornando o
 resultante em um sinal de igual profundidade.
 
 Além de ter como saída o resultado da operação a ALU sinaliza se o resultado
-foi negativo. Isso é importante para a instrução de desvio condicional, que
+foi negativo utilizando o bit mais significativo do resultado, já que usa-se complemento de 2. Isso é importante para a instrução de desvio condicional, que
 funciona armazenando um sinal que indica se a última operação realizada foi
 negativa no registrador "psr".
 
 ##### Banco de registradores
+Declaração em VHDL:
+```VHDL
+entity register_file is -- registrador de 32 palavras
 
-(leitura assíncrona e escrita síncrona com enable, etc. "pinagem")
+    port(
+         ra_1, ra_2, wa_3 : in std_logic_vector(4 downto 0); -- entradas com endereço
+         clk : in std_logic;
+         we : in std_logic; -- write enable
+         wa_3_data : in std_logic_vector(31 downto 0); -- entrada de dados de escrita
+         ra_1_data, ra_2_data : out std_logic_vector(31 downto 0) -- saída de dados de leitura
+        );
+
+end register_file;
+```
+Mesmo modelo utilizado no livro-texto da disciplina, com leitura assíncrona e escrita síncrona.
 
 ##### Unidade de Controle
-
+Declaração em VHDL:
+```VHDL
+entity control is
+    port(
+         opcode : in std_logic_vector(5 downto 0);
+         format : in std_logic_vector(1 downto 0);
+-- sinal que determina se ocorre escrita em memoria de dados
+         data_we : out std_logic;
+-- sinal que determina se pode ocorrer um branch (depende adicionalmente da saida negativa da alu. vide documentacao)
+         branch : out std_logic;
+-- sinal que determina se ocorre escrita nos registradores
+         register_we : out std_logic;
+-- sinal que determina a fonte do dado a ser escrito nos registradores (entre saida da memoria de dados ou da alu)
+         regwrite_source : out std_logic;
+-- sinal que determina se ocorre escrita no psr
+         psr_we : out std_logic;
+-- sinal que determina a operacao da alu
+         alu_control : out std_logic_vector(3 downto 0));
+end entity;
+```
 A unidade de controle é responsável por controlar permissões de escrita e
 os vários mutliplexadores distribuídos no datapath para a execução das
 instruções. A unidade recebe como entrada os sinais "opcode" e "format".
@@ -198,23 +246,94 @@ A tabela de verdade para a unidade de controle é apresentada a seguir:
 | bl        | xxxxxx | 00     | x       | x           | 1      | x               | 0      | xxxx        |
 
 O destino e a função de cada um dos sinais de saída é detalhado de forma
-visual na ilustração do datapath desenvolvido.
+visual na ilustração do datapath desenvolvido. Ressalta-se que parte das 
+entradas da Unidade de Controle real, como o campo `cond` da instrução branch, 
+não foram representadas pois não as utilizamos no código
 
 ##### Memórias
+- Memória de dados\
+Declaração em VHDL:
+```VHDL
+entity data_memory is -- memoria de dados de 32 palavras
 
-(endereçamento, etc)
+    port(
+         data_address: in std_logic_vector(4 downto 0); -- data address
+         clk : in std_logic;
+         we : in std_logic; -- write enable
+         write_data : in std_logic_vector(31 downto 0);
+         data : out std_logic_vector(31 downto 0)
+        );
+
+end data_memory;
+``` 
+A memória de dados possui entrada e saída de dados, com entrada de endereço e de habilitação de escrita.
+- Memória de instrução\
+Declaração em VHDL:
+```VHDL
+entity instruction_memory is
+
+    port(
+            set : in std_logic; -- sinal para carregamento de progrma
+            address : in std_logic_vector(4 downto 0);
+            instruction : out std_logic_vector(31 downto 0));
+
+end instruction_memory;
+```
+Como nunca há escrita na memória de instrução, ela possui apenas entrada de endereço e saída assíncrona. O sinal set é usado somente para iniciar a memória por meio de um testbench.
+
+
 
 ##### Extensor de sinal
-
-(só os pinos)
-
+Declaração em VHDL:
+```VHDL
+entity signex is
+    generic(size: integer := 12); -- na verdade é tamanho - 1
+    port(
+         signex_in: in std_logic_vector(size downto 0);
+         signex_out: out std_logic_vector(31 downto 0));
+end signex;
+```
+Extende em sinal o imediato de 13 bits.
 ##### Somador
-
-(com ou sem sinal, qtos bits)
+Declaração em VHDL:
+```VHDL
+entity adder is
+    port(
+         src_a : in std_logic_vector(4 downto 0);
+         src_b : in std_logic_vector(4 downto 0);
+         sum : out std_logic_vector(4 downto 0));
+end adder;
+```
+Somador com sinal, para o endereço de PC. Note que PC foi reduzido e usa somente 5 bits.
 ##### PC
-(qtos bits, se tem enable)
+Descrição em VHDL:
+```VHDL
+entity program_counter is -- registrador que armazena endereços de instruções
+
+    port(
+         next_instruction_address : in std_logic_vector(4 downto 0);
+         clk : in std_logic;
+         current_instruction_address : out std_logic_vector(4 downto 0)
+        );
+
+end program_counter;
+```
+Registrador de 5 bits com entrada paralela.
 ##### PSR
-(qtos bits, se tem enable)
+Declaração em VHDL:
+```VHDL
+entity ps_register is -- registrador que armazena se ultima operacao da alu foi negativa
+
+    port(
+         psr_we : in std_logic; -- write enable
+         next_input : in std_logic;
+         clk : in std_logic;
+         last_input : out std_logic
+        );
+
+end ps_register;
+```
+Só é usado 1 bit desse registrador, então ele foi reduzido.
 
 ### Notas sobre e execução
 
@@ -329,4 +448,8 @@ a parada.
 ![exemplo_branch](https://github.com/gtLara/sparc/blob/master/images/end.png)
 
 ## Referências
-The SPARC Architecture Manual, Version 8, disponível em [https://sparc.org/](https://sparc.org/).
+Repositório Github [https://github.com/gtLara/sparc](https://github.com/gtLara/sparc)\
+The SPARC Architecture Manual, Version 8, [https://sparc.org/](https://sparc.org/)\
+Apresentação de slides do curso CS217 - Programing Systems de Princeton\
+[https://www.cs.princeton.edu/courses/archive/spring02/cs217/lectures/sparc.pdf](https://www.cs.princeton.edu/courses/archive/spring02/cs217/lectures/sparc.pdf)\
+[https://www.cs.princeton.edu/courses/archive/spring03/cs217/lectures/Branching.pdf](https://www.cs.princeton.edu/courses/archive/spring03/cs217/lectures/Branching.pdf) 
