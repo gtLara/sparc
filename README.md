@@ -5,7 +5,7 @@
 A arquitetura SPARC(Scalable Processor ARChitecture) é uma arquitetura aberta
 RISC criada em 1987 pela SUN Microsystems. Neste trabalho usaremos a versão 8 da SPARC, de 32
 bits como inspiração para fazer um processador ciclo único que execute um
-algoritmo simples de teste de paridade de bits. Todos os códigos escritos, 
+algoritmo simples de teste de paridade de bits. Todos os códigos escritos,
 análises e passos para a conclusão do projeto estão em um repoitório no Github
 referenciado ao final deste documento.
 ## Características da arquitetura mais relevantes para nossa aplicação:
@@ -98,7 +98,7 @@ Código em Assembly do SPARC
 ! %g0 = %r0 = constante 0
 ! de estado:
 ! %psr - registrador de estado, usa ele no bl
-! PC - Program Counter 
+! PC - Program Counter
 
 !seções devem ser iniciadas assim:
 .section ".data"
@@ -136,7 +136,7 @@ Instrução 8 (bl) - 00000110100000000000000000000011
 ```
 ## Datapath
 
-![datapath](https://github.com/gtLara/sparc/blob/master/images/dp.jpeg)
+![painel_onda](https://github.com/gtLara/sparc/blob/master/images/dp.jpg)
 
 ## Decisões de projeto
 
@@ -151,7 +151,7 @@ De maneira geral, as decisões de projeto foram tomadas tendo em vista a constru
 
 O processador foi implementado em linguagem VHDL e verificado utilizando o ModelSim. A figura `X` mostra o processador desenvolvido com o caminho de dados e a unidade de controle.\
 (imagem)\
-Em seguida uma breve descrição de cada componente. 
+Em seguida uma breve descrição de cada componente.
 
 ##### ALU
 Declaração em VHDL:
@@ -192,7 +192,9 @@ funciona armazenando um sinal que indica se a última operação realizada foi
 negativa no registrador "psr".
 
 ##### Banco de registradores
+
 Declaração em VHDL:
+
 ```VHDL
 entity register_file is -- registrador de 32 palavras
 
@@ -246,8 +248,8 @@ A tabela de verdade para a unidade de controle é apresentada a seguir:
 | bl        | xxxxxx | 00     | x       | x           | 1      | x               | 0      | xxxx        |
 
 O destino e a função de cada um dos sinais de saída é detalhado de forma
-visual na ilustração do datapath desenvolvido. Ressalta-se que parte das 
-entradas da Unidade de Controle real, como o campo `cond` da instrução branch, 
+visual na ilustração do datapath desenvolvido. Ressalta-se que parte das
+entradas da Unidade de Controle real, como o campo `cond` da instrução branch,
 não foram representadas pois não as utilizamos no código
 
 ##### Memórias
@@ -265,7 +267,7 @@ entity data_memory is -- memoria de dados de 32 palavras
         );
 
 end data_memory;
-``` 
+```
 A memória de dados possui entrada e saída de dados, com entrada de endereço e de habilitação de escrita.
 - Memória de instrução\
 Declaração em VHDL:
@@ -452,4 +454,4 @@ Repositório Github [https://github.com/gtLara/sparc](https://github.com/gtLara/
 The SPARC Architecture Manual, Version 8, [https://sparc.org/](https://sparc.org/)\
 Apresentação de slides do curso CS217 - Programing Systems de Princeton\
 [https://www.cs.princeton.edu/courses/archive/spring02/cs217/lectures/sparc.pdf](https://www.cs.princeton.edu/courses/archive/spring02/cs217/lectures/sparc.pdf)\
-[https://www.cs.princeton.edu/courses/archive/spring03/cs217/lectures/Branching.pdf](https://www.cs.princeton.edu/courses/archive/spring03/cs217/lectures/Branching.pdf) 
+[https://www.cs.princeton.edu/courses/archive/spring03/cs217/lectures/Branching.pdf](https://www.cs.princeton.edu/courses/archive/spring03/cs217/lectures/Branching.pdf)
