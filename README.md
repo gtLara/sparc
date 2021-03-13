@@ -122,6 +122,7 @@ for:    and %l1, 1, %l2     ! pega o LSB do dados atual e poe em %l2
                             ! mas a gente vai ignorar isso no caminho de dados
 !FIM, o resultado com crc fica em %l0
 ```
+[Neste](https://github.com/gtLara/sparc/blob/master/tinkerASM/codigo_de_maquina.pdf) arquivo é possível ver a correspondência entre o código de máquina e a sintaxe em assembly.
 ```
 Linguagem de Máquina:
 Instrução 0 (ld) - 11100000000000000010000000000001
