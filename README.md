@@ -135,7 +135,7 @@ Instrução 6 (add) - 10101110000001011110000000000001
 Instrução 7 (cmp) - 10000000101001011110000000001000
 Instrução 8 (bl) - 00000110100000000000000000000011
 ```
-## Datapath
+## Datapath e Control Unit
 
 ![painel_onda](https://github.com/gtLara/sparc/blob/master/images/dp.jpg)
 
